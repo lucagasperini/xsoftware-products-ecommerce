@@ -1,0 +1,9 @@
+.xs_cart_discount{
+        padding:32px;
+        display:flex;
+}
+
+.xs_cart_pdf_frame{
+        width:100%;
+        height:500px;
+}

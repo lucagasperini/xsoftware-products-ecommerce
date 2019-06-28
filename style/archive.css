@@ -12,6 +12,7 @@
 .products_item > img {
         width:300px;
         height:300px;
+        float: right;
 }
 
 .products_item > .price > i {

@@ -26,16 +26,21 @@ class xs_products_ecommerce_plugin
         function override_filter()
         {
                 $cart_option = get_option('xs_options_cart');
-                $this->currency = $cart_option['sys']['currency'];
                 $this->checkout = $cart_option['sys']['checkout'];
 
                 global $xs_products_plugin;
                 global $xs_cart_plugin;
 
+                remove_filter('xs_cart_sale_order_html', [$xs_cart_plugin, 'show_cart_html']);
                 remove_filter('xs_cart_add_html', [$xs_cart_plugin,'cart_add_html']);
+                remove_filter('xs_cart_approved_html', [$xs_cart_plugin,'show_cart_approved_html']);
+                remove_filter('xs_cart_empty_html', [$xs_cart_plugin, 'show_cart_empty_html']);
                 remove_filter('xs_product_archive_html', [$xs_products_plugin, 'archive_html'], 0);
                 remove_filter('xs_product_single_html', [$xs_products_plugin, 'single_html'], 0);
+                add_filter('xs_cart_sale_order_html', [$this, 'show_cart_html']);
                 add_filter('xs_cart_add_html', [$this,'cart_add_html']);
+                add_filter('xs_cart_approved_html', [$this,'show_cart_approved_html']);
+                add_filter('xs_cart_empty_html', [$this, 'show_cart_empty_html']);
                 add_filter('xs_product_archive_html', [ $this, 'archive_html' ], 0, 2);
                 add_filter('xs_product_single_html', [ $this, 'single_html' ], 0, 2);
         }
@@ -100,7 +105,7 @@ class xs_products_ecommerce_plugin
                 if(!empty($price)) {
                         echo '<div class="cart">';
                         echo '<span>Prezzo:</span>';
-                        echo '<i>'.$price. ' ' . $this->currency.'</i>';
+                        echo '<i>'.$price['price'].' '.$price['currency'].'</i>';
                         echo apply_filters('xs_cart_add_html', $id);
                         echo '</div>';
                 }
@@ -136,12 +141,96 @@ class xs_products_ecommerce_plugin
                         if(!empty($price)) {
                                 $output .= '<div class="price">';
                                 $output .= '<p>Al prezzo mensile di:</p>';
-                                $output .= '<i>'.$price.' '.$this->currency.'</i>';
+                                $output .= '<i>'.$price['price'].' '.$price['currency'].'</i>';
                                 $output .= '</div>';
                         }
-                        $output .= '<img src="'.$image.'" /></div></a>';
+                        $output .= '<img src="'.$image.'"/></div></a>';
                 }
                 $output .= '</div>';
+                return $output;
+        }
+
+        function show_cart_html($sale_order)
+        {
+                wp_enqueue_style('xs_cart_checkout_style', plugins_url('style/cart.css', __FILE__));
+
+                $output = '';
+                $table = array();
+
+                foreach($sale_order['items'] as $id => $values) {
+                        $table[$id]['id'] = $values['id'];
+                        $table[$id]['name'] = $values['name'];
+                        $table[$id]['quantity'] = $values['quantity'];
+                        $table[$id]['price'] = $values['price'] . ' ' . $sale_order['currency'];
+                        $table[$id]['actions'] = '<a href="?rem_cart='.$values['id'].'">Remove</a>';
+                }
+
+                $output .= xs_framework::create_table([
+                        'data' => $table,
+                        'headers' => [
+                                'ID',
+                                'Descrizione',
+                                'Quantità',
+                                'Prezzo unitario',
+                                'Azioni',
+                        ],
+                        'echo' => FALSE
+                ]);
+
+                $t['subtotal'][0] = 'Imponibile:';
+                $t['subtotal'][1] = $sale_order['untaxed'] . ' ' . $sale_order['currency'];
+                $t['taxed'][0] = 'IVA:';
+                $t['taxed'][1] = $sale_order['taxed'] . ' ' . $sale_order['currency'];
+                $t['total'][0] = 'Totale:';
+                $t['total'][1] = $sale_order['total'] . ' ' . $sale_order['currency'];
+                $output .= xs_framework::create_table([
+                        'data' => $t,
+                        'echo' => FALSE
+                ]);
+
+                $output .= '<form action="" method="GET">';
+
+                $label = '<span>Codice Sconto:</span>';
+                $discount = xs_framework::create_input([
+                        'name' => 'discount'
+                ]);
+                $button = xs_framework::create_button([
+                        'text' => 'Applica lo sconto'
+                ]);
+
+                $output .= xs_framework::create_container([
+                        'class' => 'xs_cart_discount',
+                        'obj' => [$label, $discount, $button],
+                        'echo' => FALSE
+                ]);
+                $output .= '</form>';
+
+                return $output;
+        }
+
+        function show_cart_empty_html()
+        {
+                wp_enqueue_style(
+                        'xs_cart_checkout_style',
+                        plugins_url('style/cart.min.css', __FILE__)
+                );
+
+                $output = '';
+                $output .= '<h2>Il carrello è vuoto!</h2>';
+                return $output;
+        }
+
+        function show_cart_approved_html($info)
+        {
+                wp_enqueue_style(
+                        'xs_cart_checkout_style',
+                        plugins_url('style/cart.min.css', __FILE__)
+                );
+
+                $output = '';
+                $output .= '<h2>Il pagamento è stato eseguito con successo!</h2>';
+                $output .= '<iframe src="'.$info['invoice_url'].'" class="xs_cart_pdf_frame">
+                        </iframe>';
                 return $output;
         }
 
