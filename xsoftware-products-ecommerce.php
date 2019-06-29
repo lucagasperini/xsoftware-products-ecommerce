@@ -105,7 +105,7 @@ class xs_products_ecommerce_plugin
                 if(!empty($price)) {
                         echo '<div class="cart">';
                         echo '<span>Prezzo:</span>';
-                        echo '<i>'.$price['price'].' '.$price['currency'].'</i>';
+                        echo '<i>'.$price['price'].' '.$price['currency_symbol'].'</i>';
                         echo apply_filters('xs_cart_add_html', $id);
                         echo '</div>';
                 }
@@ -141,7 +141,8 @@ class xs_products_ecommerce_plugin
                         if(!empty($price)) {
                                 $output .= '<div class="price">';
                                 $output .= '<p>Al prezzo mensile di:</p>';
-                                $output .= '<i>'.$price['price'].' '.$price['currency'].'</i>';
+                                $output .= '<i>'.$price['price'].
+                                ' '.$price['currency_symbol'].'</i>';
                                 $output .= '</div>';
                         }
                         $output .= '<img src="'.$image.'"/></div></a>';
@@ -157,11 +158,13 @@ class xs_products_ecommerce_plugin
                 $output = '';
                 $table = array();
 
+                $symbol = $sale_order['currency_symbol'];
+
                 foreach($sale_order['items'] as $id => $values) {
                         $table[$id]['id'] = $values['id'];
                         $table[$id]['name'] = $values['name'];
                         $table[$id]['quantity'] = $values['quantity'];
-                        $table[$id]['price'] = $values['price'] . ' ' . $sale_order['currency'];
+                        $table[$id]['price'] = $values['price'] . ' ' . $symbol;
                         $table[$id]['actions'] = '<a href="?rem_cart='.$values['id'].'">Remove</a>';
                 }
 
@@ -178,11 +181,11 @@ class xs_products_ecommerce_plugin
                 ]);
 
                 $t['subtotal'][0] = 'Imponibile:';
-                $t['subtotal'][1] = $sale_order['untaxed'] . ' ' . $sale_order['currency'];
+                $t['subtotal'][1] = $sale_order['untaxed'] . ' ' . $symbol;
                 $t['taxed'][0] = 'IVA:';
-                $t['taxed'][1] = $sale_order['taxed'] . ' ' . $sale_order['currency'];
+                $t['taxed'][1] = $sale_order['taxed'] . ' ' . $symbol;
                 $t['total'][0] = 'Totale:';
-                $t['total'][1] = $sale_order['total'] . ' ' . $sale_order['currency'];
+                $t['total'][1] = $sale_order['total'] . ' ' . $symbol;
                 $output .= xs_framework::create_table([
                         'data' => $t,
                         'echo' => FALSE
