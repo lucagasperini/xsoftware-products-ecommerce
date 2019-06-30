@@ -12,7 +12,6 @@
 .products_item > img {
         width:300px;
         height:300px;
-        float: right;
 }
 
 .products_item > .price > i {
@@ -44,5 +43,8 @@
         .products_item > .price {
                 width:200px;
                 padding:16px;
+        }
+        .products_item > img {
+                float: right;
         }
 }
