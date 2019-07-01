@@ -232,8 +232,8 @@ class xs_products_ecommerce_plugin
 
                 $output = '';
                 $output .= '<h2>Il pagamento è stato eseguito con successo!</h2>';
-                $output .= '<iframe src="'.$info['invoice_url'].'" class="xs_cart_pdf_frame">
-                        </iframe>';
+                $output .= '<embed src="'.$info['invoice_url'].'" type="application/pdf"
+                        class="xs_cart_pdf_frame"></iframe>';
                 return $output;
         }
 
