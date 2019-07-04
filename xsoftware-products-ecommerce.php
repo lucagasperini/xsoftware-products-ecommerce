@@ -22,6 +22,7 @@ class xs_products_ecommerce_plugin
         {
                 add_action('init', [$this, 'override_filter']);
                 add_filter('xs_cart_invoice_pdf_print', [$this, 'print_invoice']);
+                add_filter('xs_cart_show_invoice_html', [$this, 'show_cart_invoice']);
         }
 
         function override_filter()
@@ -244,6 +245,18 @@ class xs_products_ecommerce_plugin
                 $output .= '<h2>Il pagamento è stato eseguito con successo!</h2>';
                 $output .= '<iframe src="data:application/pdf;base64,'.$info['invoice']['pdf'].'"
                         class="xs_cart_pdf_frame"></iframe>';
+                return $output;
+        }
+
+        function show_cart_invoice($info)
+        {
+                if(empty($info))
+                        return '<h1>You do not have permission to log in here!</h1>';
+
+                $output = '';
+                $output .= '<iframe src="data:application/pdf;base64,'.$info['pdf']['base64'].'"
+                        style="width:100%;height:500px;"></iframe>';
+
                 return $output;
         }
 
