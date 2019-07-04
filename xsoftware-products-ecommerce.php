@@ -151,42 +151,50 @@ class xs_products_ecommerce_plugin
                 return $output;
         }
 
-        function show_cart_html($sale_order)
+        function show_cart_html($so)
         {
                 wp_enqueue_style('xs_cart_checkout_style', plugins_url('style/cart.css', __FILE__));
 
                 $output = '';
                 $table = array();
 
-                $symbol = $sale_order['currency_symbol'];
+                $symbol = $so['transaction']['currency_symbol'];
 
-                foreach($sale_order['items'] as $id => $values) {
-                        $table[$id]['id'] = $values['id'];
-                        $table[$id]['name'] = $values['name'];
-                        $table[$id]['quantity'] = $values['quantity'];
-                        $table[$id]['price'] = $values['price'] . ' ' . $symbol;
-                        $table[$id]['actions'] = '<a href="?rem_cart='.$values['id'].'">Remove</a>';
+                foreach($so['items'] as $item) {
+                        $tmp = array();
+                        $tmp[] = $item['name'];
+                        $tmp[] = $item['quantity'];
+                        $tmp[] = $item['price'];
+                        $tmp[] = $item['discount'];
+                        $tmp[] = $item['tax_code'];
+                        $tmp[] = $item['subtotal'] . ' ' . $symbol;
+                        $tmp[] = '<a href="?rem_cart='.$item['id'].'">Rimuovi</a>';
+
+                        $display_items[] = $tmp;
                 }
-
                 $output .= xs_framework::create_table([
-                        'data' => $table,
+                        'class' => 'items',
+                        'data' => $display_items,
                         'headers' => [
-                                'ID',
                                 'Descrizione',
                                 'Quantità',
                                 'Prezzo unitario',
-                                'Azioni',
+                                'Sconto (%)',
+                                'IVA',
+                                'Subtotale',
+                                'Azioni'
                         ],
                         'echo' => FALSE
                 ]);
 
-                $t['subtotal'][0] = 'Imponibile:';
-                $t['subtotal'][1] = $sale_order['untaxed'] . ' ' . $symbol;
-                $t['taxed'][0] = 'IVA:';
-                $t['taxed'][1] = $sale_order['taxed'] . ' ' . $symbol;
-                $t['total'][0] = 'Totale:';
-                $t['total'][1] = $sale_order['total'] . ' ' . $symbol;
+                $t['subtotal'][0] = '<strong>Imponibile:</strong>';
+                $t['subtotal'][1] = $so['transaction']['subtotal'] . ' ' . $symbol;
+                $t['taxed'][0] = '<strong>IVA:</strong>';
+                $t['taxed'][1] = $so['transaction']['tax'] . ' ' . $symbol;
+                $t['total'][0] = '<strong>Totale:</strong>';
+                $t['total'][1] = $so['transaction']['total'] . ' ' . $symbol;
                 $output .= xs_framework::create_table([
+                        'class' => 'globals',
                         'data' => $t,
                         'echo' => FALSE
                 ]);
@@ -256,7 +264,7 @@ class xs_products_ecommerce_plugin
                 <div class="company">
                 <span itemprop="name">'.$info['company']['name'].'</span><br/>
                 <span itemprop="streetAddress">'.$info['company_address']['line1'].'<br/>'.
-                $info['company_address']['city'].' '.$info['company_address']['state'].' '.
+                $info['company_address']['city'].' '.$info['company_address']['state_code'].' '.
                 $info['company_address']['zip'].'<br/>'.
                 $info['company_address']['country_code'].'</span>
                 </div>
@@ -264,7 +272,7 @@ class xs_products_ecommerce_plugin
                 <span itemprop="name">'.$info['payer']['first_name'].' '.
                 $info['payer']['last_name'].'</span><br/>
                 <span itemprop="streetAddress">'.$info['invoice_address']['line1'].'<br/>'.
-                $info['invoice_address']['city'].' '.$info['invoice_address']['state'].' '.
+                $info['invoice_address']['city'].' '.$info['invoice_address']['state_code'].' '.
                 $info['invoice_address']['zip'].'<br/>'.
                 $info['invoice_address']['country_code'].'</span>
                 </div>
@@ -383,13 +391,16 @@ class xs_products_ecommerce_plugin
                 th{
                         padding-top: 0.75rem;
                         vertical-align: top;
-                        border-top: 1px solid #dee2e6;
-                        border-bottom: 1px solid #dee2e6;
+                        border-top: 2px solid #dee2e6;
+                        border-bottom: 2px solid #dee2e6;
                         text-align: left;
                         padding-bottom: 0.75rem;
                 }
                 td{
                         padding: 0.3rem;
+                }
+                tr{
+                        border-bottom: 1px solid #dee2e6;
                 }
                 .items{
                         width: 100%;
@@ -401,9 +412,6 @@ class xs_products_ecommerce_plugin
                         width: 50%;
                         margin-bottom: 1rem;
                         border-collapse: collapse;
-                }
-                .globals > tbody > tr{
-                        border-top: 1px solid #dee2e6;
                 }
                 .list-inline{
                         margin-bottom: 4px;
