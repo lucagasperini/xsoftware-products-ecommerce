@@ -21,6 +21,7 @@ class xs_products_ecommerce_plugin
         public function __construct()
         {
                 add_action('init', [$this, 'override_filter']);
+                add_filter('xs_cart_invoice_pdf_print', [$this, 'print_invoice']);
         }
 
         function override_filter()
@@ -228,6 +229,7 @@ class xs_products_ecommerce_plugin
 
                 $output = '';
                 $output .= '<h2>Il carrello è vuoto!</h2>';
+
                 return $output;
         }
 
@@ -240,14 +242,13 @@ class xs_products_ecommerce_plugin
 
                 $output = '';
                 $output .= '<h2>Il pagamento è stato eseguito con successo!</h2>';
-                $output .= '<iframe src="'.$this->show_invoice($info).'" type="application/pdf"
+                $output .= '<iframe src="data:application/pdf;base64,'.$info['invoice']['pdf'].'"
                         class="xs_cart_pdf_frame"></iframe>';
                 return $output;
         }
 
-        function show_invoice($info)
+        function print_invoice($info)
         {
-
                 $symbol = $info['transaction']['currency_symbol'];
 
                 $output = '<html>
@@ -445,7 +446,7 @@ class xs_products_ecommerce_plugin
 
                 $output .= '</html>';
 
-                $invoice_dir=XS_CONTENT_DIR.'invoices/';
+                $invoice_dir='/tmp/xs_invoices/';
                 if(is_dir($invoice_dir) === FALSE)
                         mkdir($invoice_dir,0744);
 
@@ -460,7 +461,11 @@ class xs_products_ecommerce_plugin
 
                 unlink($htmlpath);
 
-                return xs_framework::get_content_file_url($pdfpath);
+                $base64 = base64_encode(file_get_contents($pdfpath));
+
+                unlink($pdfpath);
+
+                return $base64;
         }
 
 }
