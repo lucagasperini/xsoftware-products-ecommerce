@@ -20,47 +20,45 @@ class xs_products_ecommerce_plugin
 
         public function __construct()
         {
-                add_action('init', [$this, 'override_filter']);
-                add_filter('xs_cart_invoice_pdf_print', [$this, 'print_invoice']);
-                add_filter('xs_cart_show_invoice_html', [$this, 'show_cart_invoice']);
-        }
-
-        function override_filter()
-        {
                 $cart_option = get_option('xs_options_cart');
                 $this->checkout = $cart_option['sys']['checkout'];
 
-                global $xs_products_plugin;
-                global $xs_cart_plugin;
-
-                remove_filter('xs_cart_sale_order_html', [$xs_cart_plugin, 'show_cart_html']);
-                remove_filter('xs_cart_add_html', [$xs_cart_plugin,'cart_add_html']);
-                remove_filter('xs_cart_approved_html', [$xs_cart_plugin,'show_cart_approved_html']);
-                remove_filter('xs_cart_empty_html', [$xs_cart_plugin, 'show_cart_empty_html']);
-                remove_filter('xs_product_archive_html', [$xs_products_plugin, 'archive_html'], 0);
-                remove_filter('xs_product_single_html', [$xs_products_plugin, 'single_html'], 0);
+                add_filter('xs_cart_invoice_pdf_print', [$this, 'print_invoice']);
+                add_filter('xs_cart_show_invoice_html', [$this, 'show_cart_invoice']);
+                /* Create a filter to show current the sale order */
                 add_filter('xs_cart_sale_order_html', [$this, 'show_cart_html']);
+                /* Create a filter to print Add to Cart button in wordpress */
                 add_filter('xs_cart_add_html', [$this,'cart_add_html']);
+                /* Create a filter to show payment approved page */
                 add_filter('xs_cart_approved_html', [$this,'show_cart_approved_html']);
+                /* Create a filter to show empty cart page */
                 add_filter('xs_cart_empty_html', [$this, 'show_cart_empty_html']);
                 add_filter('xs_product_archive_html', [ $this, 'archive_html' ], 0, 2);
                 add_filter('xs_product_single_html', [ $this, 'single_html' ], 0, 2);
         }
 
+        /*
+        *  string : cart_add_html : int
+        *  This method is used to create the add to cart button
+        *  $post_id is the current post id to add on cart
+        */
         function cart_add_html($post_id)
         {
+                /* Initialize string HTML variable */
                 $output = '';
 
+                /* Add the css */
                 wp_enqueue_style(
                         'xs_product_template',
                         plugins_url('style/single.min.css',__FILE__)
                 );
-
+                /* Create a button with $post_id as GET value*/
                 $btn = xs_framework::create_button([
                         'name' => 'add_cart',
                         'value' => $post_id,
                         'text' => 'Aggiungi al Carrello'
                 ]);
+                /* Create a number input as quantity of this item */
                 $qt_label = '<span>Mesi:</span>';
                 $qt = xs_framework::create_input_number([
                         'name' => 'qt',
@@ -75,14 +73,17 @@ class xs_products_ecommerce_plugin
                         'echo' => FALSE
                 ]);
 
+                /* Create a form on checkout page as GET method */
                 $output .= '<form action="'.$this->checkout.'" method="get">';
+                /* Get HTML string as container of css class */
                 $output .= xs_framework::create_container([
                         'class' => 'xs_add_cart_container',
                         'obj' => [$qt_container, $btn],
                         'echo' => FALSE
                 ]);
+                /* Close the form */
                 $output .= '</form>';
-
+                /* Return HTML */
                 return $output;
         }
 
@@ -152,16 +153,23 @@ class xs_products_ecommerce_plugin
                 $output .= '</div>';
                 return $output;
         }
-
+        /*
+        *  string : show_cart_html : array
+        *  This method is used to create the html page for no empty cart
+        */
         function show_cart_html($so)
         {
+                /* Add the css style */
                 wp_enqueue_style('xs_cart_checkout_style', plugins_url('style/cart.css', __FILE__));
 
+                /* Print the HTML */
                 $output = '';
+                /* Create table array */
                 $table = array();
-
+                /* Get the currency symbol */
                 $symbol = $so['transaction']['currency_symbol'];
 
+                /* Get the variable for sale order */
                 foreach($so['items'] as $item) {
                         $tmp = array();
                         $tmp[] = $item['name'];
@@ -174,6 +182,7 @@ class xs_products_ecommerce_plugin
 
                         $display_items[] = $tmp;
                 }
+                /* Print the table */
                 $output .= xs_framework::create_table([
                         'class' => 'items',
                         'data' => $display_items,
@@ -188,63 +197,76 @@ class xs_products_ecommerce_plugin
                         ],
                         'echo' => FALSE
                 ]);
-
+                /* Get the global property from sale order */
                 $t['subtotal'][0] = '<strong>Imponibile:</strong>';
                 $t['subtotal'][1] = $so['transaction']['subtotal'] . ' ' . $symbol;
                 $t['taxed'][0] = '<strong>IVA:</strong>';
                 $t['taxed'][1] = $so['transaction']['tax'] . ' ' . $symbol;
                 $t['total'][0] = '<strong>Totale:</strong>';
                 $t['total'][1] = $so['transaction']['total'] . ' ' . $symbol;
+                /* Get the table */
                 $output .= xs_framework::create_table([
                         'class' => 'globals',
                         'data' => $t,
                         'echo' => FALSE
                 ]);
-
+                /* Get the form for discount code */
                 $output .= '<form action="" method="GET">';
-
+                /* Print discount code label and text input */
                 $label = '<span>Codice Sconto:</span>';
                 $discount = xs_framework::create_input([
                         'name' => 'discount'
                 ]);
+                /* Print the button */
                 $button = xs_framework::create_button([
                         'text' => 'Applica lo sconto'
                 ]);
-
+                /* Print the container */
                 $output .= xs_framework::create_container([
                         'class' => 'xs_cart_discount',
                         'obj' => [$label, $discount, $button],
                         'echo' => FALSE
                 ]);
+                /* Close the form */
                 $output .= '</form>';
-
+                /* Return the HTML string */
                 return $output;
         }
-
+        /*
+        *  string : cart_add_html : void
+        *  This method is used to create the html page for empty cart
+        */
         function show_cart_empty_html()
         {
+                /* Add the css style */
                 wp_enqueue_style(
                         'xs_cart_checkout_style',
                         plugins_url('style/cart.min.css', __FILE__)
                 );
-
+                /* Print the HTML */
                 $output = '';
                 $output .= '<h2>Il carrello è vuoto!</h2>';
-
+                /* Return the HTML */
                 return $output;
         }
-
+        /*
+        *  string : show_cart_approved_html : array
+        *  This method is used to create the html page for approved payment
+        */
         function show_cart_approved_html($info)
         {
+                /* Add the css style */
                 wp_enqueue_style(
                         'xs_cart_checkout_style',
                         plugins_url('style/cart.min.css', __FILE__)
                 );
-
+                /* Print the HTML */
                 $output = '';
                 $output .= '<h2>Il pagamento è stato eseguito con successo!</h2>';
+                /* Print the invoice pdf on a frame */
                 $output .= '<iframe src="data:application/pdf;base64,'.$info['invoice']['pdf'].'"
                         class="xs_cart_pdf_frame"></iframe>';
+                /* Return the HTML */
                 return $output;
         }
 
@@ -252,11 +274,12 @@ class xs_products_ecommerce_plugin
         {
                 if(empty($info))
                         return '<h1>You do not have permission to log in here!</h1>';
-
+                /* Print the HTML */
                 $output = '';
+                /* Print the invoice pdf on a frame */
                 $output .= '<iframe src="data:application/pdf;base64,'.$info['pdf']['base64'].'"
                         style="width:100%;height:500px;"></iframe>';
-
+                /* Return the HTML */
                 return $output;
         }
 
