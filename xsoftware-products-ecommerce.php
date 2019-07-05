@@ -33,8 +33,62 @@ class xs_products_ecommerce_plugin
                 add_filter('xs_cart_approved_html', [$this,'show_cart_approved_html']);
                 /* Create a filter to show empty cart page */
                 add_filter('xs_cart_empty_html', [$this, 'show_cart_empty_html']);
+                add_filter('xs_cart_show_list_invoice_html', [$this, 'show_list_invoice']);
                 add_filter('xs_product_archive_html', [ $this, 'archive_html' ], 0, 2);
                 add_filter('xs_product_single_html', [ $this, 'single_html' ], 0, 2);
+                /* Use @xs_framework_menu_items to print cart menu item */
+                add_filter('xs_framework_menu_items', [ $this, 'cart_menu_item' ], 2);
+        }
+        /*
+        *  array : cart_menu_item : array
+        *  This method is used to create the menu items
+        *  using menu class build in on wordpress
+        *  $items are the menu class defined on this wordpress installation
+        */
+        function cart_menu_item($items)
+        {
+                /* Add a parent menu item for user */
+                $top = xs_framework::insert_nav_menu_item([
+                        'title' => '<i class="fas fa-user-circle"></i>',
+                        'url' => '',
+                        'order' => 100
+                ]);
+                /* Append this menu on input array */
+                $items[] = $top;
+
+                /* Add a child menu item for shopping cart */
+                $items[] = xs_framework::insert_nav_menu_item([
+                        'title' => '<i class="fas fa-shopping-cart"></i><span>Carrello</span>',
+                        'url' => $this->checkout,
+                        'order' => 101,
+                        'parent' => $top->ID
+                ]);
+
+                /* If user is logged print Logout item, else Login item*/
+                if(is_user_logged_in()) {
+                        $items[] = xs_framework::insert_nav_menu_item([
+                                'title' => '<i class="fas fa-file-invoice"></i>Fatture</span>',
+                                'url' => $this->checkout.'?invoice',
+                                'order' => 102,
+                                'parent' => $top->ID
+                        ]);
+                        $items[] = xs_framework::insert_nav_menu_item([
+                                'title' => '<i class="fas fa-sign-out-alt"></i>Logout</span>',
+                                'url' => wp_logout_url( home_url() ),
+                                'order' => 103,
+                                'parent' => $top->ID
+                        ]);
+                } else {
+                        $items[] = xs_framework::insert_nav_menu_item([
+                                'title' => '<i class="fas fa-sign-in-alt"></i><span>Login</span>',
+                                'url' => wp_login_url( home_url() ),
+                                'order' => 102,
+                                'parent' => $top->ID
+                        ]);
+                }
+
+                /* Return modify menu class array */
+                return $items;
         }
 
         /*
@@ -270,10 +324,53 @@ class xs_products_ecommerce_plugin
                 return $output;
         }
 
+        function show_list_invoice($info)
+        {
+                $output = '';
+                $display = array();
+
+                foreach($info as $i) {
+                        $symbol = $i['transaction']['currency_symbol'];
+                        $tmp = array();
+                        $tmp[] = $i['invoice']['id'];
+                        $tmp[] = $i['invoice']['name'];
+                        $tmp[] = $i['invoice']['date'];
+                        $tmp[] = $i['payer']['name'];
+                        $tmp[] = $i['transaction']['total'] . ' ' . $symbol;
+                        $tmp[] = xs_framework::create_link([
+                                'href' => $this->checkout.'?invoice='.$i['invoice']['id'],
+                                'text' => 'Apri',
+                                'echo' => FALSE
+                        ]);
+
+                        $display[] = $tmp;
+                }
+
+                /* Print the table */
+                $output .= xs_framework::create_table([
+                        'class' => 'invoice_list',
+                        'data' => $display,
+                        'headers' => [
+                                'ID',
+                                'Nome',
+                                'Data',
+                                'Intestatario',
+                                'Importo',
+                                'Azioni',
+                        ],
+                        'echo' => FALSE
+                ]);
+                return $output;
+        }
+
         function show_cart_invoice($info)
         {
-                if(empty($info))
-                        return '<h1>You do not have permission to log in here!</h1>';
+                if(!is_array($info)) {
+                        if($info === 0)
+                                return '<h1>La fattura selezionata non esiste!</h1>';
+                        if($info === 1)
+                                return '<h1>Non hai i permessi per entrare qui!</h1>';
+                }
                 /* Print the HTML */
                 $output = '';
                 /* Print the invoice pdf on a frame */
