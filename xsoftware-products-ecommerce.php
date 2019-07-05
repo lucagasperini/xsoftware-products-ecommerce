@@ -47,6 +47,12 @@ class xs_products_ecommerce_plugin
         */
         function cart_menu_item($items)
         {
+                /* Add the css */
+                wp_enqueue_style(
+                        'xs_cart_menu_items',
+                        plugins_url('style/menu.min.css',__FILE__)
+                );
+
                 /* Add a parent menu item for user */
                 $top = xs_framework::insert_nav_menu_item([
                         'title' => '<i class="fas fa-user-circle"></i>',
