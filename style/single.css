@@ -9,6 +9,7 @@
 
 .product_content > .info {
         padding:8px;
+        width: 100%;
 }
 
 .product_content > .info > h1{
