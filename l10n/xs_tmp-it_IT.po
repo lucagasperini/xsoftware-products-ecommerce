@@ -1,0 +1,113 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: XSoftware Template HTML\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: XSoftware\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: it_IT\n"
+
+#. Empty cart
+msgid "The cart is empty!"
+msgstr "Il carrello è vuoto!"
+
+#. Cart
+msgid "Cart"
+msgstr "Carrello"
+
+#. Invoices
+msgid "Invoices"
+msgstr "Fatture"
+
+#. Logout
+msgid "Logout"
+msgstr "Esci"
+
+#. Invoices
+msgid "Login"
+msgstr "Accedi"
+
+#. Add to Cart
+msgid "Add to Cart"
+msgstr "Aggiungi al carrello"
+
+#. Quantity
+msgid "Quantity"
+msgstr "Quantità"
+
+#. Price
+msgid "Price"
+msgstr "Prezzo"
+
+#. Remove
+msgid "Remove"
+msgstr "Rimuovi"
+
+#. Description
+msgid "Description"
+msgstr "Descrizione"
+
+#. Discount (%)
+msgid "Discount (%)"
+msgstr "Sconto (%)"
+
+#. VAT
+msgid "VAT"
+msgstr "IVA"
+
+#. Subtotal
+msgid "Subtotal"
+msgstr "Imponibile"
+
+#. Actions
+msgid "Actions"
+msgstr "Azioni"
+
+#. Discount Code
+msgid "Discount Code"
+msgstr "Codice sconto"
+
+#. Apply discount
+msgid "Apply discount"
+msgstr "Applica sconto"
+
+#. The payment was successful!
+msgid "The payment was successful!"
+msgstr "Il pagamento è stato eseguito con successo!"
+
+#. Open
+msgid "Open"
+msgstr "Apri"
+
+#. ID
+msgid "ID"
+msgstr "ID"
+
+#. Name
+msgid "Name"
+msgstr "Nome"
+
+#. Date
+msgid "Date"
+msgstr "Data"
+
+#. Accountholder
+msgid "Accountholder"
+msgstr "Intestatario"
+
+#. Amount
+msgid "Amount"
+msgstr "Totale"
+
+#. Months
+msgid "Months"
+msgstr "Mesi"
+
+#. Price per month
+msgid "Price per month"
+msgstr "Prezzo al mese"

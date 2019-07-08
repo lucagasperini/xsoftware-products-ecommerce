@@ -1,0 +1,88 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: XSoftware Template HTML\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: XSoftware\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.0.6\n"
+
+#. Empty cart
+msgid "The cart is empty!"
+msgstr ""
+#. Cart
+msgid "Cart"
+msgstr ""
+#. Invoices
+msgid "Invoices"
+msgstr ""
+#. Logout
+msgid "Logout"
+msgstr ""
+#. Invoices
+msgid "Login"
+msgstr ""
+#. Add to Cart
+msgid "Add to Cart"
+msgstr ""
+#. Quantity
+msgid "Quantity"
+msgstr ""
+#. Price
+msgid "Price"
+msgstr ""
+#. Remove
+msgid "Remove"
+msgstr ""
+#. Description
+msgid "Description"
+msgstr ""
+#. Discount (%)
+msgid "Discount (%)"
+msgstr ""
+#. VAT
+msgid "VAT"
+msgstr ""
+#. Subtotal
+msgid "Subtotal"
+msgstr ""
+#. Actions
+msgid "Actions"
+msgstr ""
+#. Discount Code
+msgid "Discount Code"
+msgstr ""
+#. Apply discount
+msgid "Apply discount"
+msgstr ""
+#. The payment was successful!
+msgid "The payment was successful!"
+msgstr ""
+#. Open
+msgid "Open"
+msgstr ""
+#. ID
+msgid "ID"
+msgstr ""
+#. Name
+msgid "Name"
+msgstr ""
+#. Date
+msgid "Date"
+msgstr ""
+#. Accountholder
+msgid "Accountholder"
+msgstr ""
+#. Amount
+msgid "Amount"
+msgstr ""
+#. Months
+msgid "Months"
+msgstr ""
+#. Price per month
+msgid "Price per month"
+msgstr ""
