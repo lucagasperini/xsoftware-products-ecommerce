@@ -62,6 +62,10 @@
         .product_content > .info {
                 padding:16px;
         }
+        .product_content > .info > .service, .product_content > .info > .server{
+                width:50%;
+                float:left;
+        }
         .product_content > .cart {
                 border-left: 1px solid #eee;
                 width:316px;

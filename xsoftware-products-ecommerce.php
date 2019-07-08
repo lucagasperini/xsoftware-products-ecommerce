@@ -166,27 +166,57 @@ class xs_template_html_plugin
                         'xs_product_template',
                         plugins_url('style/single.min.css', __FILE__)
                 );
+                $output = '';
                 $image = get_the_post_thumbnail_url( $id, 'medium' );
                 $title = get_the_title($id);
                 $price = apply_filters('xs_cart_item_price', $id);
 
-                echo '<div class="product_item">';
-                echo '<div class="product_content">';
-                echo '<img src="'.$image.'"/>';
-                echo '<div class="info">';
-                echo '<h1>'.$title.'</h1>';
-                echo '<p class="descr">'.$single['descr'].'</p>';
-                echo '<p class="text">'.$single['text'].'</p>';
-                echo '</div>';
+                $output .= '<div class="product_item">';
+                $output .= '<div class="product_content">';
+                $output .= '<img src="'.$image.'"/>';
+                $output .= '<div class="info">';
+                $output .= '<h1>'.$title.'</h1>';
+                $output .= '<p class="descr">'.$single['descr'].'</p>';
+                $output .= '<div class="service">';
+                $output .= '<h3>'.__('Our service includes','xs_tmp').':</h3>';
+                $output .= '<b>'.__('SSL certificate','xs_tmp').':</b>';
+                $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                $output .= '<b>'.__('Daily backup','xs_tmp').':</b>';
+                $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                $output .= '<b>'.__('DNS management','xs_tmp').':</b>';
+                $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                $output .= '<b>'.__('Website','xs_tmp').':</b>';
+                $output .= '<p>Hosting WordPress '.$single['web'].' SUPER GIGA</p>';
+                $output .= '<b>'.__('Cloud','xs_tmp').':</b>';
+                $output .= '<p>Hosting NextCloud '.$single['cloud'].' GIGA</p>';
+                $output .= '<b>'.__('ERP','xs_tmp').':</b>';
+                $output .= '<p>Hosting Odoo '.$single['web'].' SUPER GIGA</p>';
+                $output .= '<b>'.__('E-Mail','xs_tmp').':</b>';
+                $output .= '<p>Hosting E-Mail '.$single['web'].' GIGA</p>';
+                $output .= '</div>';
+                $output .= '<div class="server">';
+                $output .= '<h3>'.__('Our server provides','xs_tmp').':</h3>';
+                $output .= '<b>'.__('SSD Drive','xs_tmp').':</b>';
+                $output .= '<p>'.$single['ssd'].' GB</p>';
+                $output .= '<b>'.__('HDD Drive','xs_tmp').':</b>';
+                $output .= '<p>'.$single['hdd'].' GB</p>';
+                $output .= '<b>'.__('RAM Space','xs_tmp').':</b>';
+                $output .= '<p>'.$single['ram'].' MB</p>';
+                $output .= '<b>'.__('CPU Cores','xs_tmp').':</b>';
+                $output .= '<p>'.$single['core'].' Core</p>';
+                $output .= '</div>';
+                $output .= '</div>';
                 if(!empty($price)) {
-                        echo '<div class="cart">';
-                        echo '<span>'.__('Price','xs_tmp').':</span>';
-                        echo '<i>'.$price['price'].' '.$price['currency_symbol'].'</i>';
-                        echo apply_filters('xs_cart_add_html', $id);
-                        echo '</div>';
+                        $output .= '<div class="cart">';
+                        $output .= '<span>'.__('Price','xs_tmp').':</span>';
+                        $output .= '<i>'.$price['price'].' '.$price['currency_symbol'].'</i>';
+                        $output .= apply_filters('xs_cart_add_html', $id);
+                        $output .= '</div>';
                 }
-                echo '</div>';
-                echo '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+
+                return $output;
         }
 
         function archive_html($archive, $user_lang)

@@ -111,3 +111,45 @@ msgstr "Mesi"
 #. Price per month
 msgid "Price per month"
 msgstr "Prezzo al mese"
+
+msgid "Our service includes"
+msgstr "Il nostro servizio include"
+
+msgid "SSL certificate"
+msgstr "Certificato SSL"
+
+msgid "Included"
+msgstr "Incluso"
+
+msgid "Daily backup"
+msgstr "Backup giornaliero"
+
+msgid "DNS management"
+msgstr "Gestione DNS"
+
+msgid "Website"
+msgstr "Sito Web"
+
+msgid "Cloud"
+msgstr "Cloud"
+
+msgid "ERP"
+msgstr "Gestionale"
+
+msgid "E-Mail"
+msgstr "E-Mail"
+
+msgid "Our server provides"
+msgstr "Il nostro server provvede"
+
+msgid "SSD Drive"
+msgstr "Disco SSD"
+
+msgid "HDD Drive"
+msgstr "Disco HDD"
+
+msgid "RAM Space"
+msgstr "Spazio RAM"
+
+msgid "CPU Cores"
+msgstr "Core processore"
