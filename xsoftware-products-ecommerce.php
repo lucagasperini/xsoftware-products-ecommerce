@@ -179,31 +179,53 @@ class xs_template_html_plugin
                 $output .= '<p class="descr">'.$single['descr'].'</p>';
                 $output .= '<div class="service">';
                 $output .= '<h3>'.__('Our service includes','xs_tmp').':</h3>';
-                $output .= '<b>'.__('SSL certificate','xs_tmp').':</b>';
-                $output .= '<p>'.__('Included','xs_tmp').'</p>';
-                $output .= '<b>'.__('Daily backup','xs_tmp').':</b>';
-                $output .= '<p>'.__('Included','xs_tmp').'</p>';
-                $output .= '<b>'.__('DNS management','xs_tmp').':</b>';
-                $output .= '<p>'.__('Included','xs_tmp').'</p>';
-                $output .= '<b>'.__('Website','xs_tmp').':</b>';
-                $output .= '<p>Hosting WordPress '.$single['web'].' SUPER GIGA</p>';
-                $output .= '<b>'.__('Cloud','xs_tmp').':</b>';
-                $output .= '<p>Hosting NextCloud '.$single['cloud'].' GIGA</p>';
-                $output .= '<b>'.__('ERP','xs_tmp').':</b>';
-                $output .= '<p>Hosting Odoo '.$single['web'].' SUPER GIGA</p>';
-                $output .= '<b>'.__('E-Mail','xs_tmp').':</b>';
-                $output .= '<p>Hosting E-Mail '.$single['web'].' GIGA</p>';
+                if(!empty($single['ssl'])) {
+                        $output .= '<b>'.__('SSL certificate','xs_tmp').':</b>';
+                        $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                }
+                if(!empty($single['backup'])) {
+                        $output .= '<b>'.__('Daily backup','xs_tmp').':</b>';
+                        $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                }
+                if(!empty($single['dns'])) {
+                        $output .= '<b>'.__('DNS management','xs_tmp').':</b>';
+                        $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                }
+                if(!empty($single['web'])) {
+                        $output .= '<b>'.__('Website','xs_tmp').':</b>';
+                        $output .= '<p>Hosting WordPress '.$single['web'].' SUPER GIGA</p>';
+                }
+                if(!empty($single['cloud'])) {
+                        $output .= '<b>'.__('Cloud','xs_tmp').':</b>';
+                        $output .= '<p>Hosting NextCloud '.$single['cloud'].' GIGA</p>';
+                }
+                if(!empty($single['erp'])) {
+                        $output .= '<b>'.__('ERP','xs_tmp').':</b>';
+                        $output .= '<p>Hosting Odoo '.$single['erp'].' SUPER GIGA</p>';
+                }
+                if(!empty($single['mail'])) {
+                        $output .= '<b>'.__('E-Mail','xs_tmp').':</b>';
+                        $output .= '<p>Hosting E-Mail '.$single['mail'].' GIGA</p>';
+                }
                 $output .= '</div>';
                 $output .= '<div class="server">';
                 $output .= '<h3>'.__('Our server provides','xs_tmp').':</h3>';
-                $output .= '<b>'.__('SSD Drive','xs_tmp').':</b>';
-                $output .= '<p>'.$single['ssd'].' GB</p>';
-                $output .= '<b>'.__('HDD Drive','xs_tmp').':</b>';
-                $output .= '<p>'.$single['hdd'].' GB</p>';
-                $output .= '<b>'.__('RAM Space','xs_tmp').':</b>';
-                $output .= '<p>'.$single['ram'].' MB</p>';
-                $output .= '<b>'.__('CPU Cores','xs_tmp').':</b>';
-                $output .= '<p>'.$single['core'].' Core</p>';
+                if(!empty($single['ssd'])) {
+                        $output .= '<b>'.__('SSD Drive','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['ssd'].' GB</p>';
+                }
+                if(!empty($single['hdd'])) {
+                        $output .= '<b>'.__('HDD Drive','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['hdd'].' GB</p>';
+                }
+                if(!empty($single['ram'])) {
+                        $output .= '<b>'.__('RAM Space','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['ram'].' MB</p>';
+                }
+                if(!empty($single['core'])) {
+                        $output .= '<b>'.__('CPU Cores','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['core'].' Core</p>';
+                }
                 $output .= '</div>';
                 $output .= '</div>';
                 if(!empty($price)) {
