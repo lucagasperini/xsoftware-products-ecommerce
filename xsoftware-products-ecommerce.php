@@ -34,8 +34,10 @@ class xs_template_html_plugin
                 /* Create a filter to show empty cart page */
                 add_filter('xs_cart_empty_html', [$this, 'show_cart_empty_html']);
                 add_filter('xs_cart_show_list_invoice_html', [$this, 'show_list_invoice']);
-                add_filter('xs_product_archive_html', [ $this, 'archive_html' ], 0, 2);
-                add_filter('xs_product_single_html', [ $this, 'single_html' ], 0, 2);
+                add_filter('xs_product_archive_html_hosting', [$this, 'archive_html_hosting'], 0,2);
+                add_filter('xs_product_archive_html_software',[$this, 'archive_html_software'],0,2);
+                add_filter('xs_product_single_html_hosting', [$this, 'single_html_hosting'], 0,2);
+                add_filter('xs_product_single_html_software', [$this, 'single_html_software'], 0,2);
                 /* Use @xs_framework_menu_items to print cart menu item */
                 add_filter('xs_framework_menu_items', [ $this, 'cart_menu_item' ], 2);
                 add_action( 'plugins_loaded', [ $this, 'l10n_load' ] );
@@ -160,7 +162,32 @@ class xs_template_html_plugin
                 return $output;
         }
 
-        function single_html($id, $single)
+        function single_html_software($id, $single)
+        {
+                wp_enqueue_style(
+                        'xs_product_template',
+                        plugins_url('style/single.min.css', __FILE__)
+                );
+
+                $output = '';
+                $image = get_the_post_thumbnail_url( $id, 'medium' );
+                $title = get_the_title($id);
+
+                $output .= '<div class="product_item">';
+                $output .= '<div class="product_content">';
+                $output .= '<img src="'.$image.'"/>';
+                $output .= '<div class="info">';
+                $output .= '<h1>'.$title.'</h1>';
+                $output .= '<p class="descr">'.$single['descr'].'</p>';
+                $output .= '<p class="text">'.$single['text'].'</p>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '</div>';
+
+                return $output;
+        }
+
+        function single_html_hosting($id, $single)
         {
                 wp_enqueue_style(
                         'xs_product_template',
@@ -241,7 +268,15 @@ class xs_template_html_plugin
                 return $output;
         }
 
-        function archive_html($archive, $user_lang)
+        function compare_by_price($a, $b)
+        {
+                if ($a['price'] == $b['price']) {
+                        return 0;
+                }
+                return ($a['price'] < $b['price']) ? -1 : 1;
+        }
+
+        function archive_html_software($archive, $user_lang)
         {
                 $output = '';
                 wp_enqueue_style(
@@ -249,13 +284,13 @@ class xs_template_html_plugin
                         plugins_url('style/archive.min.css', __FILE__)
                 );
                 $output .= '<div class="products_table">';
-                foreach($archive as $single) {
-                        $image = get_the_post_thumbnail_url( $single, 'medium' );
-                        $title = get_the_title($single);
-                        $link = get_the_permalink($single);
-                        $price = apply_filters('xs_cart_item_price', $single->ID);
+
+                foreach($archive as $id) {
+                        $image = get_the_post_thumbnail_url( $id, 'medium' );
+                        $title = get_the_title($id);
+                        $link = get_the_permalink($id);
                         $descr = get_post_meta(
-                                $single->ID,
+                                $id,
                                 'xs_products_descr_'.$user_lang,
                                 true
                         );
@@ -266,14 +301,59 @@ class xs_template_html_plugin
                         $output .= '<h1>'.$title.'</h1>';
                         $output .= '<p>'.$descr.'</p>';
                         $output .= '</div>';
+                        $output .= '<img src="'.$image.'"/></div></a>';
+                }
+                $output .= '</div>';
+                return $output;
+        }
+
+        function archive_html_hosting($archive, $user_lang)
+        {
+                $output = '';
+                wp_enqueue_style(
+                        'xs_product_template',
+                        plugins_url('style/archive.min.css', __FILE__)
+                );
+                $by_price = array();
+
+                foreach($archive as $id) {
+                        $tmp = array();
+
+                        $tmp['id'] = $id;
+                        $price = apply_filters('xs_cart_item_price', $id);
+                        $tmp['price'] = $price['price'];
+                        $tmp['currency'] = $price['currency_symbol'];
+                        $tmp['link'] = get_the_permalink($id);
+                        $tmp['title'] = get_the_title($id);
+                        $tmp['image'] = get_the_post_thumbnail_url( $id, 'medium' );
+                        $tmp['descr'] = get_post_meta(
+                                $id,
+                                'xs_products_descr_'.$user_lang,
+                                true
+                        );
+
+                        $by_price[] = $tmp;
+                }
+
+                usort($by_price, [$this,'compare_by_price']);
+
+                $output .= '<div class="products_table">';
+
+                foreach($by_price as $s) {
+                        $output .= '<a href="'.$s['link'].'">';
+                        $output .= '<div class="products_item">';
+                        $output .= '<div class="text">';
+                        $output .= '<h1>'.$s['title'].'</h1>';
+                        $output .= '<p>'.$s['descr'].'</p>';
+                        $output .= '</div>';
                         if(!empty($price)) {
                                 $output .= '<div class="price">';
                                 $output .= '<p>'.__('Price per month','xs_tmp').':</p>';
-                                $output .= '<i>'.$price['price'].
-                                ' '.$price['currency_symbol'].'</i>';
+                                $output .= '<i>'.$s['price'].
+                                ' '.$s['currency'].'</i>';
                                 $output .= '</div>';
                         }
-                        $output .= '<img src="'.$image.'"/></div></a>';
+                        $output .= '<img src="'.$s['image'].'"/></div></a>';
                 }
                 $output .= '</div>';
                 return $output;
