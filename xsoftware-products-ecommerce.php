@@ -41,6 +41,7 @@ class xs_template_html_plugin
                 /* Use @xs_framework_menu_items to print cart menu item */
                 add_filter('xs_framework_menu_items', [ $this, 'cart_menu_item' ], 2);
                 add_action( 'plugins_loaded', [ $this, 'l10n_load' ] );
+                add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post']);
         }
 
         function l10n_load()
@@ -538,6 +539,59 @@ class xs_template_html_plugin
                 $output .= '<iframe src="data:application/pdf;base64,'.$info['pdf']['base64'].'"
                         style="width:100%;height:500px;"></iframe>';
                 /* Return the HTML */
+                return $output;
+        }
+
+        function show_facebook_post($post)
+        {
+                $post += [
+                        'description' => '',
+                        'caption' => '',
+                        'created_time' => '',
+                        'full_picture' => '',
+                        'is_published' => '',
+                        'permalink_url' => '',
+                        'width' => '',
+                        'height' => '',
+                        'event' => '',
+                        'is_hidden' => '',
+                        'from' => '',
+                        'link' => '',
+                        'message_tags' => '',
+                        'status_type' => '',
+                        'privacy' => ''
+                ];
+
+                /* Add the css style */
+                wp_enqueue_style(
+                        'xs_cart_checkout_style',
+                        plugins_url('style/socials.min.css', __FILE__)
+                );
+
+                /* Print the HTML */
+                $output = '';
+
+                $output .= '<a href="'.$post['permalink_url'].'">';
+                $output .= '<div class="xs_socials_fb_post">';
+
+                $output .= '<div class="info">';
+                $output .= '<div class="user_info">';
+                $output .= '<img src="https://graph.facebook.com/'.$post['from']['id'].'/picture?type=square">';
+                $output .= '<span>'.$post['from']['name'].'</span>';
+                $output .= '</div>';
+                $output .= '<div class="post_info">';
+                $output .= '<span>'.$post['created_time']->format('d/m/Y').'</span>';
+                $output .= '</div>';
+                $output .= '</div>';
+                $output .= '<div class="post">';
+                $output .= '<span class="description">'.$post['description'].'</span>';
+                $output .= '<img src="'.$post['full_picture'].'">';
+                $output .= '<span class="caption">'.$post['caption'].'</span>';
+                $output .= '</div>';
+
+                $output .= '</div>';
+                $output .= '</a>';
+
                 return $output;
         }
 
