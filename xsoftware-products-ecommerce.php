@@ -42,6 +42,7 @@ class xs_template_html_plugin
                 add_filter('xs_framework_menu_items', [ $this, 'cart_menu_item' ], 2);
                 add_action( 'plugins_loaded', [ $this, 'l10n_load' ] );
                 add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post'], 10 ,2);
+                add_filter('xs_socials_twitter_post', [$this, 'show_twitter_post']);
         }
 
         function l10n_load()
@@ -564,7 +565,7 @@ class xs_template_html_plugin
 
                 /* Add the css style */
                 wp_enqueue_style(
-                        'xs_cart_checkout_style',
+                        'xs_socials_facebook_style',
                         plugins_url('style/socials.min.css', __FILE__)
                 );
 
@@ -575,7 +576,7 @@ class xs_template_html_plugin
                 $output = '';
 
 
-                $output .= '<div class="xs_socials_fb_post">';
+                $output .= '<div class="xs_socials_post">';
 
                 $output .= '<div class="info">';
                 $output .= '<a href="'.$user['link'].'">';
@@ -592,6 +593,46 @@ class xs_template_html_plugin
                         $output .= '<span class="description">'.$post['description'].'</span>';
                 if(!empty($post['full_picture']))
                         $output .= '<img src="'.$post['full_picture'].'">';
+                //if(!empty($post['caption']))
+                //        $output .= '<span class="caption">'.$post['caption'].'</span>';
+                $output .= '</div>';
+                $output .= '</a>';
+
+                $output .= '</div>';
+
+                return $output;
+        }
+
+        function show_twitter_post($post)
+        {
+
+                /* Add the css style */
+                wp_enqueue_style(
+                        'xs_socials_twitter_style',
+                        plugins_url('style/socials.min.css', __FILE__)
+                );
+
+                /* Print the HTML */
+                $output = '';
+
+
+                $output .= '<div class="xs_socials_post">';
+
+                $output .= '<div class="info">';
+                $output .= '<a href="'.$post['user_link'].'">';
+                $output .= '<div class="user">';
+                $output .= '<img src="'.$post['user_image'].'">';
+                $output .= '<span>'.$post['user_name'].'</span>';
+                $output .= '</div>';
+                $output .= '</a>';
+                $output .= '<span class="date">'.$post['date'].'</span>';
+                $output .= '</div>';
+                $output .= '<a href="'.$post['user_link'].'/status/'.$post['id'].'">';
+                $output .= '<div class="post">';
+                if(!empty($post['description']))
+                        $output .= '<span class="description">'.$post['description'].'</span>';
+                if(!empty($post['media']))
+                        $output .= '<img src="'.$post['media'][0]['url'].'">';
                 //if(!empty($post['caption']))
                 //        $output .= '<span class="caption">'.$post['caption'].'</span>';
                 $output .= '</div>';

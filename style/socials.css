@@ -1,10 +1,10 @@
-.xs_socials_fb_post{
+.xs_socials_post{
         box-shadow: 0 1px 2px rgba(238,238,238,.2); /* #eeeeee */
         margin-bottom:16px;
         padding-top:16px;
 }
 
-.xs_socials_fb_post > .info {
+.xs_socials_post > .info {
         width:100%;
         display:table;
         padding-left:16px;
@@ -12,45 +12,45 @@
         margin-bottom:16px;
 }
 
-.xs_socials_fb_post > .info > a > .user {
+.xs_socials_post > .info > a > .user {
         display:table;
 }
 
-.xs_socials_fb_post > .info > a > .user > span {
+.xs_socials_post > .info > a > .user > span {
         padding-left:16px;
         display:table-cell;
         vertical-align:middle;
 }
-.xs_socials_fb_post > .info > a > .user >  img {
+.xs_socials_post > .info > a > .user >  img {
         width:50px;
         height:50px;
         border-radius: 50%;
         display:table-cell;
 }
 
-.xs_socials_fb_post > .info > .date {
+.xs_socials_post > .info > .date {
         display:table-cell;
         vertical-align:middle;
         text-align: right;
 }
 
-.xs_socials_fb_post > a > .post {
+.xs_socials_post > a > .post {
         width:100%;
         display: grid;
 }
 
-.xs_socials_fb_post > a > .post > .description {
+.xs_socials_post > a > .post > .description {
         padding-left:16px;
         padding-right:16px;
         margin-bottom:16px;
 }
-.xs_socials_fb_post > a >.post > img {
+.xs_socials_post > a >.post > img {
         width:100%;
         margin:auto;
 }
 
 @media screen and (min-width: 48em) {
-        .xs_socials_fb_post{
+        .xs_socials_post{
                 width:50%;
                 margin-left: 20%;
                 margin-right: 20%;
