@@ -41,7 +41,7 @@ class xs_template_html_plugin
                 /* Use @xs_framework_menu_items to print cart menu item */
                 add_filter('xs_framework_menu_items', [ $this, 'cart_menu_item' ], 2);
                 add_action( 'plugins_loaded', [ $this, 'l10n_load' ] );
-                add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post']);
+                add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post'], 10 ,2);
         }
 
         function l10n_load()
@@ -542,7 +542,7 @@ class xs_template_html_plugin
                 return $output;
         }
 
-        function show_facebook_post($post)
+        function show_facebook_post($post, $user)
         {
                 $post += [
                         'description' => '',
@@ -574,16 +574,19 @@ class xs_template_html_plugin
                 /* Print the HTML */
                 $output = '';
 
-                $output .= '<a href="'.$post['permalink_url'].'">';
+
                 $output .= '<div class="xs_socials_fb_post">';
 
                 $output .= '<div class="info">';
+                $output .= '<a href="'.$user['link'].'">';
                 $output .= '<div class="user">';
                 $output .= '<img src="https://graph.facebook.com/'.$post['from']['id'].'/picture?type=square">';
                 $output .= '<span>'.$post['from']['name'].'</span>';
                 $output .= '</div>';
+                $output .= '</a>';
                 $output .= '<span class="date">'.$post['created_time']->format('d/m/Y').'</span>';
                 $output .= '</div>';
+                $output .= '<a href="'.$post['permalink_url'].'">';
                 $output .= '<div class="post">';
                 if(!empty($post['description']))
                         $output .= '<span class="description">'.$post['description'].'</span>';
@@ -592,9 +595,9 @@ class xs_template_html_plugin
                 //if(!empty($post['caption']))
                 //        $output .= '<span class="caption">'.$post['caption'].'</span>';
                 $output .= '</div>';
+                $output .= '</a>';
 
                 $output .= '</div>';
-                $output .= '</a>';
 
                 return $output;
         }
