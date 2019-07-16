@@ -568,6 +568,9 @@ class xs_template_html_plugin
                         plugins_url('style/socials.min.css', __FILE__)
                 );
 
+                if(empty($post['description']) && empty($post['full_picture']))
+                        return '';
+
                 /* Print the HTML */
                 $output = '';
 
@@ -575,18 +578,19 @@ class xs_template_html_plugin
                 $output .= '<div class="xs_socials_fb_post">';
 
                 $output .= '<div class="info">';
-                $output .= '<div class="user_info">';
+                $output .= '<div class="user">';
                 $output .= '<img src="https://graph.facebook.com/'.$post['from']['id'].'/picture?type=square">';
                 $output .= '<span>'.$post['from']['name'].'</span>';
                 $output .= '</div>';
-                $output .= '<div class="post_info">';
-                $output .= '<span>'.$post['created_time']->format('d/m/Y').'</span>';
-                $output .= '</div>';
+                $output .= '<span class="date">'.$post['created_time']->format('d/m/Y').'</span>';
                 $output .= '</div>';
                 $output .= '<div class="post">';
-                $output .= '<span class="description">'.$post['description'].'</span>';
-                $output .= '<img src="'.$post['full_picture'].'">';
-                $output .= '<span class="caption">'.$post['caption'].'</span>';
+                if(!empty($post['description']))
+                        $output .= '<span class="description">'.$post['description'].'</span>';
+                if(!empty($post['full_picture']))
+                        $output .= '<img src="'.$post['full_picture'].'">';
+                //if(!empty($post['caption']))
+                //        $output .= '<span class="caption">'.$post['caption'].'</span>';
                 $output .= '</div>';
 
                 $output .= '</div>';
