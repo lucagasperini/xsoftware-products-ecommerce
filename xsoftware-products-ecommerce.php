@@ -63,7 +63,7 @@ class xs_template_html_plugin
                 'navigation, to use them press the "Accept" button. For more information you can consult our','xs_tmp').
                 '<a href="'.$url.'"> '.__('Privacy Policy','xs_tmp').'</a>.';
 
-                echo '<div class="xs_privacy_message">
+                return '<div class="xs_privacy_message">
                 <p>'.$message.'</p>
                 <button onclick="xs_privacy_accept();">'.__('Accept','xs_tmp').'</button>
                 </div>';
