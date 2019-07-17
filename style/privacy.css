@@ -1,0 +1,20 @@
+.xs_privacy_message {
+        display: flex;
+        position: fixed;
+        border-color: #333;
+        border:1px solid #333;
+        align-items: center;
+        padding-left:20%;
+        padding-right:20%;
+        padding-bottom:16px;
+        padding-top:16px;
+        width: 100%;
+        bottom: 0;
+        background: #222;
+        color: #eee;
+}
+
+.xs_privacy_message > p {
+        padding-right:16px;
+        margin:0;
+}

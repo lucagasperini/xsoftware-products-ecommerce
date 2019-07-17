@@ -153,3 +153,16 @@ msgstr "Spazio RAM"
 
 msgid "CPU Cores"
 msgstr "Core processore"
+
+msgid ""
+"This site uses technical and third-party cookies, to improve the experience of navigation, to use them press the "
+"\"Accept\" button. For more information you can consult our"
+msgstr ""
+"Questo sito utilizza cookie tecnici and terze parti, per migliorare l’esperienza di navigazione, per utilizzarli "
+"premi sul pulsante \"Accetta\". Per ulteriori informazioni puoi consultare la nostra"
+
+msgid "Privacy Policy"
+msgstr "Informativa sulla Privacy"
+
+msgid "Accept"
+msgstr "Accetto"

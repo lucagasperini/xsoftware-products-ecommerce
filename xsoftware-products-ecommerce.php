@@ -43,11 +43,30 @@ class xs_template_html_plugin
                 add_action( 'plugins_loaded', [ $this, 'l10n_load' ] );
                 add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post'], 10 ,2);
                 add_filter('xs_socials_twitter_post', [$this, 'show_twitter_post']);
+                add_filter('xs_framework_privacy_show', [$this, 'show_privacy_banner']);
         }
 
         function l10n_load()
         {
                 load_plugin_textdomain('xs_tmp', false, basename( dirname( __FILE__ ) ).'/l10n/');
+        }
+
+        function show_privacy_banner()
+        {
+                /* Add the css */
+                wp_enqueue_style(
+                        'xs_privacy_banner_style',
+                        plugins_url('style/privacy.min.css',__FILE__)
+                );
+                $url = get_privacy_policy_url();
+                $message = __('This site uses technical and third-party cookies, to improve the experience of '.
+                'navigation, to use them press the "Accept" button. For more information you can consult our','xs_tmp').
+                '<a href="'.$url.'"> '.__('Privacy Policy','xs_tmp').'</a>.';
+
+                echo '<div class="xs_privacy_message">
+                <p>'.$message.'</p>
+                <button onclick="xs_privacy_accept();">'.__('Accept','xs_tmp').'</button>
+                </div>';
         }
 
         /*
