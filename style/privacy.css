@@ -12,6 +12,7 @@
         bottom: 0;
         background: #222;
         color: #eee;
+        z-index: 1000;
 }
 
 .xs_privacy_message > p {
