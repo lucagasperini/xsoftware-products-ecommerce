@@ -44,6 +44,9 @@ class xs_template_html_plugin
                 add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post'], 10 ,2);
                 add_filter('xs_socials_twitter_post', [$this, 'show_twitter_post']);
                 add_filter('xs_framework_privacy_show', [$this, 'show_privacy_banner']);
+                add_filter('xs_bugtracking_searchbox_show', [$this, 'bugtracking_searchbox_show']);
+                add_filter('xs_bugtracking_archive_show', [$this, 'bugtracking_archive_show'], 10, 2);
+                add_filter('xs_bugtracking_single_show', [$this, 'bugtracking_single_show'], 10, 2);
         }
 
         function l10n_load()
@@ -660,6 +663,158 @@ class xs_template_html_plugin
                 $output .= '</div>';
 
                 return $output;
+        }
+
+        function bugtracking_searchbox_show($search)
+        {
+                /* Create the html form */
+                echo '<form method="get">';
+
+                xs_framework::create_select([
+                        'class' => 'xs_full_width',
+                        'name' => 'pro',
+                        'data'=> $search['product'],
+                        'default' => 'By Product',
+                        'echo' => TRUE
+                ]);
+
+                xs_framework::create_select([
+                        'class' => 'xs_full_width',
+                        'name' => 'st',
+                        'data'=> $search['status'],
+                        'default' => 'By Status',
+                        'echo' => TRUE
+                ]);
+
+                xs_framework::create_select([
+                        'class' => 'xs_full_width',
+                        'name' => 'i',
+                        'data'=> $search['importance'],
+                        'default' => 'By Importance',
+                        'echo' => TRUE
+                ]);
+
+                xs_framework::create_button([
+                        'text' => 'Search..',
+                        'echo' => TRUE
+                ]);
+
+                /* Close the html form */
+                echo "</form>";
+
+                /* Get all variable from the $_GET variable, is empty string if is not present */
+                $output['product'] = isset($_GET['pro']) ? intval($_GET['pro']) : '';
+                $output['status'] = isset($_GET['st']) ? intval($_GET['st']) : '';
+                $output['importance'] = isset($_GET['i']) ? intval($_GET['i']) : '';
+
+                return $output;
+        }
+
+        function bugtracking_archive_show($bugs, $search)
+        {
+                $data = array();
+                $users = xs_framework::get_user_display_name();
+
+                /* Loop all post found in the query */
+                foreach($bugs as $single) {
+                        /* Get the id from the post */
+                        $id = $single->ID;
+                        /* Get the metadata from the post */
+                        $meta = get_post_custom( $id );
+
+                        /* Get the metadata specific informations from the post */
+                        $current['product'] = isset($meta['xs_bugtracking_product'][0]) ?
+intval($meta['xs_bugtracking_product'][0]) : '';
+                        $current['status'] = isset($meta['xs_bugtracking_status'][0]) ?
+intval($meta['xs_bugtracking_status'][0]) : '';
+                        $current['assignee'] = isset($meta['xs_bugtracking_assignee'][0]) ?
+intval($meta['xs_bugtracking_assignee'][0]) : '';
+                        $current['importance'] = isset($meta['xs_bugtracking_importance'][0]) ?
+intval($meta['xs_bugtracking_importance'][0]) : '';
+
+                        /* Create a link in the actions column */
+                        $data[$id][] = xs_framework::create_link([
+                                'href' => get_permalink($id),
+                                'text' => 'Show'
+                        ]);
+
+                        /* Define all property columns */
+                        $data[$id][] = $id;
+                        $data[$id][] = $search['product'][$current['product']];
+                        $data[$id][] = $single->post_title;
+                        $data[$id][] = $search['status'][$current['status']];
+                        $data[$id][] = $users[$current['assignee']];
+                        $data[$id][] = $users[$single->post_author];
+                        $data[$id][] = $search['importance'][$current['importance']];
+                        $data[$id][] = $single->post_date_gmt;
+                        $data[$id][] = $single->post_modified_gmt;
+                }
+                $fields = array();
+
+                /* Define all columns header */
+                $fields[] = 'Actions';
+                $fields[] = 'ID';
+                $fields[] = 'Product';
+                $fields[] = 'Title';
+                $fields[] = 'Status';
+                $fields[] = 'Assignee';
+                $fields[] = 'Reported By';
+                $fields[] = 'Importance';
+                $fields[] = 'Reported on';
+                $fields[] = 'Last edit on';
+
+                /* Create the table */
+                return xs_framework::create_table([
+                        'headers' => $fields,
+                        'data' => $data,
+                        'echo' => FALSE
+                ]);
+
+        }
+
+        function bugtracking_single_show($id, $search)
+        {
+                $users = xs_framework::get_user_display_name();
+                /* Get the post class from the post id */
+                $post = get_post($id);
+                /* Get the metadata from the post id */
+                $meta = get_post_custom( $id );
+
+                /* Get the metadata specific informations from the post */
+                $product = isset($meta['xs_bugtracking_product'][0]) ? intval($meta['xs_bugtracking_product'][0]) : '';
+                $status = isset($meta['xs_bugtracking_status'][0]) ? intval($meta['xs_bugtracking_status'][0]) : '';
+                $assignee = isset($meta['xs_bugtracking_assignee'][0]) ?
+                        intval($meta['xs_bugtracking_assignee'][0]) :
+                        '';
+                $importance = isset($meta['xs_bugtracking_importance'][0]) ?
+                        intval($meta['xs_bugtracking_importance'][0]) :
+                        '';
+
+                $data['product'][0] = 'Product:';
+                $data['product'][1] = $search['product'][$product];
+                $data['status'][0] = 'Status:';
+                $data['status'][1] = $search['status'][$status];
+                $data['importance'][0] = 'Importance:';
+                $data['importance'][1] = $search['importance'][$importance];
+                $data['assignee'][0] = 'Assignee:';
+                $data['assignee'][1] = $users[$assignee];
+                $data['reported_by'][0] = 'Reported by:';
+                $data['reported_by'][1] = $users[$post->post_author];
+                $data['create_date'][0] = 'Reported on:';
+                $data['create_date'][1] = $post->post_date_gmt;
+                $data['modify_date'][0] = 'Last edit on:';
+                $data['modify_date'][1] = $post->post_modified_gmt;
+
+                /* Print the title of the bug with it's id */
+                echo '<h1>Bug '.$id.': '.get_the_title($id).'</h1>';
+
+                /* Print the bug property as table */
+                xs_framework::create_table([
+                        'data' => $data
+                ]);
+
+                /* Print the text of the bug */
+                echo '<p class="xs_text">'.$post->post_content.'</p>';
         }
 
 }
