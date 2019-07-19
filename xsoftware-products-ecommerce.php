@@ -46,7 +46,9 @@ class xs_template_html_plugin
                 add_filter('xs_framework_privacy_show', [$this, 'show_privacy_banner']);
                 add_filter('xs_bugtracking_searchbox_show', [$this, 'bugtracking_searchbox_show']);
                 add_filter('xs_bugtracking_archive_show', [$this, 'bugtracking_archive_show'], 10, 2);
-                add_filter('xs_bugtracking_single_show', [$this, 'bugtracking_single_show'], 10, 2);
+                add_filter('xs_bugtracking_single_show', [$this, 'bugtracking_single_show']);
+                add_filter('xs_documentation_archive_show', [$this, 'documentation_archive_show']);
+                add_filter('xs_documentation_single_show', [$this, 'documentation_single_show']);
         }
 
         function l10n_load()
@@ -817,6 +819,69 @@ intval($meta['xs_bugtracking_importance'][0]) : '';
                 echo '<p class="xs_text">'.$post->post_content.'</p>';
         }
 
+        function documentation_archive_show($info)
+        {
+                /* Add the css style */
+                wp_enqueue_style(
+                        'xs_documentation_style',
+                        plugins_url('style/documentation.min.css', __FILE__)
+                );
+                $output = '';
+                /* Print the matrix */
+                foreach($info['post'] as $cat_id => $docs) {
+                        /* Get the current category */
+                        $current = $info['categories'][$cat_id];
+                        /* Print the treeview */
+                        $output .= '<ul class="css-treeview">';
+                        /* Print the category image */
+                        $output .= xs_framework::create_image([
+                                'src' => $current['img'],
+                                'alt' => $current['name'],
+                                'height' => 150,
+                                'width' => 150
+                        ]);
+                        /* Print the title of the category */
+                        $output .=  '<label>'.$current['name'].'</label>';
+                        /* Print the description of the category */
+                        $output .=  '<p>'.$current['descr'].'</p>';
+                        /* Print the sub array of documentations */
+                        foreach($docs as $id) {
+                                /* Print the row */
+                                $output .=  '<li><div class="row">';
+                                /* Print the link on title*/
+                                $output .=  '<a href="'.get_permalink($id).'">'.get_the_title($id).'</a>';
+                                /* Print the download link */
+                                $output .=  '<a class="download-link" href="'.get_permalink($id).'?download">';
+                                /* Print the font-awesome icon for download */
+                                $output .=  '<i class="fas fa-file-download"></i>';
+                                /* Close download link */
+                                $output .=  '</a>';
+                                /* Close the row */
+                                $output .=  '</div></li>';
+                        }
+                        /* Close the treeview */
+                        $output .=  '</ul>';
+                }
+
+                return $output;
+        }
+
+        function documentation_single_show($id)
+        {
+                /* Add the css style */
+                wp_enqueue_style(
+                        'xs_documentation_style',
+                        plugins_url('style/documentation.min.css', __FILE__)
+                );
+                $output = '';
+                /* Print the title of the documentation */
+                $output .= '<h1>'.get_the_title($id).'</h1>';
+
+                /* Print the parsed HTML of the documentation*/
+                $output .= get_post_meta($id, 'xs_documentation_html', true);
+
+                return $output;
+        }
 }
 
 endif;
