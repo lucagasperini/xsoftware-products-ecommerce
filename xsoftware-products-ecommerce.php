@@ -49,6 +49,7 @@ class xs_template_html_plugin
                 add_filter('xs_bugtracking_single_show', [$this, 'bugtracking_single_show']);
                 add_filter('xs_documentation_archive_show', [$this, 'documentation_archive_show']);
                 add_filter('xs_documentation_single_show', [$this, 'documentation_single_show']);
+                add_filter('xs_socials_icons_show', [$this, 'show_socials_icons']);
         }
 
         function l10n_load()
@@ -72,6 +73,26 @@ class xs_template_html_plugin
                 <p>'.$message.'</p>
                 <button onclick="xs_privacy_accept();">'.__('Accept','xs_tmp').'</button>
                 </div>';
+        }
+
+        function show_socials_icons()
+        {
+                /* Add the css */
+                wp_enqueue_style(
+                        'xs_socials_icons_style',
+                        plugins_url('style/socials-icons.min.css',__FILE__)
+                );
+
+                /* Initialize string HTML variable */
+                $output = '';
+
+                $output .= '<div class="xs_socials_icons">';
+                $output .= '<a href="mailto:info@xsoftware.it"><i class="fas fa-envelope-square"></i></a>';
+                $output .= '<a href="https://www.facebook.com/xsoftware.it"><i class="fab fa-facebook-square"></i></a>';
+                $output .= '<a href="https://twitter.com/xsoftware_"><i class="fab fa-twitter-square"></i></a>';
+                $output .= '</div>';
+
+                return $output;
         }
 
         /*
