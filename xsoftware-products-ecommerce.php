@@ -626,7 +626,7 @@ class xs_template_html_plugin
                 $output .= '<div class="info">';
                 $output .= '<a href="'.$user['link'].'">';
                 $output .= '<div class="user">';
-                $output .= '<img src="https://graph.facebook.com/'.$post['from']['id'].'/picture?type=square">';
+                $output .= '<img src="'.$user['picture']['url'].'">';
                 $output .= '<span>'.$post['from']['name'].'</span>';
                 $output .= '</div>';
                 $output .= '</a>';
@@ -747,13 +747,17 @@ class xs_template_html_plugin
 
                         /* Get the metadata specific informations from the post */
                         $current['product'] = isset($meta['xs_bugtracking_product'][0]) ?
-intval($meta['xs_bugtracking_product'][0]) : '';
+                                intval($meta['xs_bugtracking_product'][0]) :
+                                '';
                         $current['status'] = isset($meta['xs_bugtracking_status'][0]) ?
-intval($meta['xs_bugtracking_status'][0]) : '';
+                                intval($meta['xs_bugtracking_status'][0]) :
+                                '';
                         $current['assignee'] = isset($meta['xs_bugtracking_assignee'][0]) ?
-intval($meta['xs_bugtracking_assignee'][0]) : '';
+                                intval($meta['xs_bugtracking_assignee'][0]) :
+                                '';
                         $current['importance'] = isset($meta['xs_bugtracking_importance'][0]) ?
-intval($meta['xs_bugtracking_importance'][0]) : '';
+                                intval($meta['xs_bugtracking_importance'][0]) :
+                                '';
 
                         /* Create a link in the actions column */
                         $data[$id][] = xs_framework::create_link([
