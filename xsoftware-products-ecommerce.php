@@ -42,6 +42,7 @@ class xs_template_html_plugin
                 add_filter('xs_framework_menu_items', [ $this, 'cart_menu_item' ], 2);
                 add_action( 'plugins_loaded', [ $this, 'l10n_load' ] );
                 add_filter('xs_socials_facebook_post', [$this, 'show_facebook_post'], 10 ,2);
+                add_filter('xs_socials_instagram_post', [$this, 'show_instagram_post'], 10 ,2);
                 add_filter('xs_socials_twitter_post', [$this, 'show_twitter_post']);
                 add_filter('xs_framework_privacy_show', [$this, 'show_privacy_banner']);
                 add_filter('xs_bugtracking_searchbox_show', [$this, 'bugtracking_searchbox_show']);
@@ -89,6 +90,7 @@ class xs_template_html_plugin
                 $output .= '<div class="xs_socials_icons">';
                 $output .= '<a href="mailto:info@xsoftware.it"><i class="fas fa-envelope-square"></i></a>';
                 $output .= '<a href="https://www.facebook.com/xsoftware.it"><i class="fab fa-facebook-square"></i></a>';
+                $output .= '<a href="https://www.instagram.com/xsoftware.it"><i class="fab fa-instagram"></i></a>';
                 $output .= '<a href="https://twitter.com/xsoftware_"><i class="fab fa-twitter-square"></i></a>';
                 $output .= '</div>';
 
@@ -648,6 +650,46 @@ class xs_template_html_plugin
                 return $output;
         }
 
+        function show_instagram_post($post, $user)
+        {
+
+                /* Add the css style */
+                wp_enqueue_style(
+                        'xs_socials_facebook_style',
+                        plugins_url('style/socials.min.css', __FILE__)
+                );
+
+                if(empty($post['caption']) && empty($post['media_url']))
+                        return '';
+
+                /* Print the HTML */
+                $output = '';
+
+
+                $output .= '<div class="xs_socials_post">';
+
+                $output .= '<div class="info">';
+                $output .= '<a href="https://www.instagram.com/'.$post['username'].'/">';
+                $output .= '<div class="user">';
+                $output .= '<img src="'.$user['profile_picture_url'].'">';
+                $output .= '<span>'.$post['username'].'</span>';
+                $output .= '</div>';
+                $output .= '</a>';
+                $output .= '<span class="date">'.date('d/m/Y',strtotime($post['timestamp'])).'</span>';
+                $output .= '</div>';
+                $output .= '<a href="'.$post['permalink'].'">';
+                $output .= '<div class="post">';
+                if(!empty($post['caption']))
+                        $output .= '<span class="description">'.$post['caption'].'</span>';
+                if(!empty($post['media_url']))
+                        $output .= '<img src="'.$post['media_url'].'">';
+                $output .= '</div>';
+                $output .= '</a>';
+
+                $output .= '</div>';
+
+                return $output;
+        }
         function show_twitter_post($post)
         {
 
