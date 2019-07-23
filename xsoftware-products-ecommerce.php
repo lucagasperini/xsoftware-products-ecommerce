@@ -619,7 +619,9 @@ class xs_template_html_plugin
                 $output .= '<div class="post">';
                 if(!empty($post['description']))
                         $output .= '<span class="description">'.$post['description'].'</span>';
-                if(!empty($post['media']))
+                if(!empty($post['media']) && is_array($post['media']))
+                        $output .= '<img src="'.$post['media'][0].'">';
+                else if(!empty($post['media']))
                         $output .= '<img src="'.$post['media'].'">';
                 $output .= '</div>';
                 $output .= '</a>';
