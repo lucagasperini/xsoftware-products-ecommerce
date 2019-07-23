@@ -592,19 +592,17 @@ class xs_template_html_plugin
 
         function show_socials_posts($post)
         {
-
                 /* Add the css style */
                 wp_enqueue_style(
                         'xs_socials_facebook_style',
                         plugins_url('style/socials.min.css', __FILE__)
                 );
 
-                if(empty($post['description']) && empty($post['media']))
-                        return '';
-
                 /* Print the HTML */
                 $output = '';
 
+                if(empty($post['description']) && empty($post['media']))
+                        return '';
 
                 $output .= '<div class="xs_socials_post">';
 
