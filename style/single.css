@@ -79,7 +79,7 @@
         font-size:32px;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 800px) {
         .product_content {
                 display: flex;
         }
