@@ -92,6 +92,7 @@ class xs_template_html_plugin
                 $output .= '<a href="https://www.facebook.com/xsoftware.it"><i class="fab fa-facebook-square"></i></a>';
                 $output .= '<a href="https://www.instagram.com/xsoftware.it"><i class="fab fa-instagram"></i></a>';
                 $output .= '<a href="https://twitter.com/xsoftware_"><i class="fab fa-twitter-square"></i></a>';
+                $output .= '<a href="https://gitlab.com/xsoftware"><i class="fab fa-gitlab"></i></a>';
                 $output .= '</div>';
 
                 return $output;
