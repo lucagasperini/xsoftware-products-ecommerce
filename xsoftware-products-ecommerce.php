@@ -46,7 +46,7 @@ class xs_template_html_plugin
                 add_filter('xs_socials_twitter_post', [$this, 'show_socials_posts']);
                 add_filter('xs_framework_privacy_show', [$this, 'show_privacy_banner']);
                 add_filter('xs_bugtracking_searchbox_show', [$this, 'bugtracking_searchbox_show']);
-                add_filter('xs_bugtracking_archive_show', [$this, 'bugtracking_archive_show'], 10, 2);
+                add_filter('xs_bugtracking_archive_show', [$this, 'bugtracking_archive_show']);
                 add_filter('xs_bugtracking_single_show', [$this, 'bugtracking_single_show']);
                 add_filter('xs_documentation_archive_show', [$this, 'documentation_archive_show']);
                 add_filter('xs_documentation_single_show', [$this, 'documentation_single_show']);
@@ -690,15 +690,13 @@ class xs_template_html_plugin
                 return $output;
         }
 
-        function bugtracking_archive_show($bugs, $search)
+        function bugtracking_archive_show($search)
         {
                 $data = array();
                 $users = xs_framework::get_user_display_name();
 
                 /* Loop all post found in the query */
-                foreach($bugs as $single) {
-                        /* Get the id from the post */
-                        $id = $single->ID;
+                foreach($search['post_id'] as $id) {
                         /* Get the metadata from the post */
                         $meta = get_post_custom( $id );
 
@@ -725,13 +723,13 @@ class xs_template_html_plugin
                         /* Define all property columns */
                         $data[$id][] = $id;
                         $data[$id][] = $search['product'][$current['product']];
-                        $data[$id][] = $single->post_title;
+                        $data[$id][] = get_the_title($id);
                         $data[$id][] = $search['status'][$current['status']];
                         $data[$id][] = $users[$current['assignee']];
-                        $data[$id][] = $users[$single->post_author];
+                        $data[$id][] = $users[get_post_field( 'post_author', $id )];
                         $data[$id][] = $search['importance'][$current['importance']];
-                        $data[$id][] = $single->post_date_gmt;
-                        $data[$id][] = $single->post_modified_gmt;
+                        $data[$id][] = get_the_date('',$id);
+                        $data[$id][] = get_the_modified_date('',$id);
                 }
                 $fields = array();
 
@@ -756,13 +754,13 @@ class xs_template_html_plugin
 
         }
 
-        function bugtracking_single_show($id, $search)
+        function bugtracking_single_show($search)
         {
                 $users = xs_framework::get_user_display_name();
                 /* Get the post class from the post id */
-                $post = get_post($id);
+                $post = get_post($search['post_id']);
                 /* Get the metadata from the post id */
-                $meta = get_post_custom( $id );
+                $meta = get_post_custom($search['post_id']);
 
                 /* Get the metadata specific informations from the post */
                 $product = isset($meta['xs_bugtracking_product'][0]) ? intval($meta['xs_bugtracking_product'][0]) : '';
@@ -790,7 +788,7 @@ class xs_template_html_plugin
                 $data['modify_date'][1] = $post->post_modified_gmt;
 
                 /* Print the title of the bug with it's id */
-                echo '<h1>'.__('Bug','xs_tmp').' '.$id.': '.get_the_title($id).'</h1>';
+                echo '<h1>'.__('Bug','xs_tmp').' '.$search['post_id'].': '.get_the_title($search['post_id']).'</h1>';
 
                 /* Print the bug property as table */
                 xs_framework::create_table([
