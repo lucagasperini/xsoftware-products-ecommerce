@@ -228,7 +228,37 @@ class xs_template_html_plugin
                 $output .= '<div class="info">';
                 $output .= '<h1>'.$title.'</h1>';
                 $output .= '<p class="descr">'.$single['descr'].'</p>';
-                $output .= '<p class="text">'.$single['text'].'</p>';
+                $output .= '<div class="software">';
+                $output .= '<h3>'.__('Software informations','xs_tmp').':</h3>';
+                if(!empty($single['year'])) {
+                        $output .= '<b>'.__('Production year','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['year'].'</p>';
+                }
+                if(!empty($single['status'])) {
+                        $output .= '<b>'.__('Development stage','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['status'].'</p>';
+                }
+                if(!empty($single['user_lang'])) {
+                        $output .= '<b>'.__('Languages','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['user_lang'].'</p>';
+                }
+                if(!empty($single['os'])) {
+                        $output .= '<b>'.__('Operating Systems','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['os'].'</p>';
+                }
+                if(!empty($single['programming_lang'])) {
+                        $output .= '<b>'.__('Programming languages','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['programming_lang'].'</p>';
+                }
+                if(!empty($single['license'])) {
+                        $output .= '<b>'.__('License','xs_tmp').':</b>';
+                        $output .= '<p><a href="'.$single['license'].'">GPL 3.0</a></p>';
+                }
+                $output .= '<a href="'.$single['git'].'">';
+                $output .= '<div class="git">';
+                $output .= '<i class="fab fa-gitlab"></i><span>GitLab</span>';
+                $output .= '</div></a>';
+                $output .= '</div>';
                 $output .= '</div>';
                 $output .= '</div>';
                 $output .= '</div>';

@@ -51,6 +51,34 @@
         width:100%;
 }
 
+
+.product_content > .info > .software > a > .git {
+        color:white;
+        background-color:#feb242;
+        width:100%;
+        text-align:center;
+        padding:8px;
+        font-size:32px;
+        border-radius: 10px;
+        border: 8px solid #feb242;
+        transition: 0.3s;
+}
+
+.product_content > .info > .software > a > .git:hover {
+        color:#feb242;
+        background-color:unset;
+        border: 8px solid #feb242;
+}
+
+.product_content > .info > .software > .git > a > i {
+
+}
+.product_content > .info > .software > a > .git > span {
+        padding-left:16px;
+        font-family: 'Source Sans Pro', sans-serif;
+        font-size:32px;
+}
+
 @media screen and (min-width: 48em) {
         .product_content {
                 display: flex;
@@ -65,6 +93,11 @@
         .product_content > .info > .service, .product_content > .info > .server{
                 width:50%;
                 float:left;
+        }
+        .product_content > .info > .software{
+                margin-right:auto;
+                margin-left:auto;
+                width:50%;
         }
         .product_content > .cart {
                 border-left: 1px solid #eee;
