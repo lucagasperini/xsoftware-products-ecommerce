@@ -166,3 +166,66 @@ msgstr "Informativa sulla Privacy"
 
 msgid "Accept"
 msgstr "Accetto"
+
+msgid "Software informations"
+msgstr "Informazioni sul software"
+
+msgid "Production year"
+msgstr "Anno di produzione"
+
+msgid "Development stage"
+msgstr "Fase di sviluppo"
+
+msgid "Languages"
+msgstr "Linguaggi"
+
+msgid "Operating Systems"
+msgstr "Sistemi Operativi"
+
+msgid "Programming languages"
+msgstr "Linguaggi di programmazione"
+
+msgid "License"
+msgstr "Licenza"
+
+msgid "By Product"
+msgstr "Per Prodotto"
+
+msgid "By Status"
+msgstr "Per Stato"
+
+msgid "By Importance"
+msgstr "Per Importanza"
+
+msgid "Search"
+msgstr "Cerca"
+
+msgid "Show"
+msgstr "Mostra"
+
+msgid "Product"
+msgstr "Prodotto"
+
+msgid "Title"
+msgstr "Titolo"
+
+msgid "Status"
+msgstr "Stato"
+
+msgid "Assignee"
+msgstr "Assegnato"
+
+msgid "Reported By"
+msgstr "Riportato da"
+
+msgid "Importance"
+msgstr "Importanza"
+
+msgid "Reported on"
+msgstr "Riportato il"
+
+msgid "Last edit on"
+msgstr "Ultima modifica il"
+
+msgid "Bug"
+msgstr "Bug"

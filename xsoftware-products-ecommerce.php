@@ -654,7 +654,7 @@ class xs_template_html_plugin
                         'class' => 'xs_full_width',
                         'name' => 'pro',
                         'data'=> $search['product'],
-                        'default' => 'By Product',
+                        'default' => __('By Product','xs_tmp'),
                         'echo' => TRUE
                 ]);
 
@@ -662,7 +662,7 @@ class xs_template_html_plugin
                         'class' => 'xs_full_width',
                         'name' => 'st',
                         'data'=> $search['status'],
-                        'default' => 'By Status',
+                        'default' => __('By Status','xs_tmp'),
                         'echo' => TRUE
                 ]);
 
@@ -670,12 +670,12 @@ class xs_template_html_plugin
                         'class' => 'xs_full_width',
                         'name' => 'i',
                         'data'=> $search['importance'],
-                        'default' => 'By Importance',
+                        'default' => __('By Importance','xs_tmp'),
                         'echo' => TRUE
                 ]);
 
                 xs_framework::create_button([
-                        'text' => 'Search..',
+                        'text' => __('Search','xs_tmp').'..',
                         'echo' => TRUE
                 ]);
 
@@ -719,7 +719,7 @@ class xs_template_html_plugin
                         /* Create a link in the actions column */
                         $data[$id][] = xs_framework::create_link([
                                 'href' => get_permalink($id),
-                                'text' => 'Show'
+                                'text' => __('Show','xs_tmp')
                         ]);
 
                         /* Define all property columns */
@@ -736,16 +736,16 @@ class xs_template_html_plugin
                 $fields = array();
 
                 /* Define all columns header */
-                $fields[] = 'Actions';
-                $fields[] = 'ID';
-                $fields[] = 'Product';
-                $fields[] = 'Title';
-                $fields[] = 'Status';
-                $fields[] = 'Assignee';
-                $fields[] = 'Reported By';
-                $fields[] = 'Importance';
-                $fields[] = 'Reported on';
-                $fields[] = 'Last edit on';
+                $fields[] = __('Actions','xs_tmp');
+                $fields[] = __('ID','xs_tmp');
+                $fields[] = __('Product','xs_tmp');
+                $fields[] = __('Title','xs_tmp');
+                $fields[] = __('Status','xs_tmp');
+                $fields[] = __('Assignee','xs_tmp');
+                $fields[] = __('Reported By','xs_tmp');
+                $fields[] = __('Importance','xs_tmp');
+                $fields[] = __('Reported on','xs_tmp');
+                $fields[] = __('Last edit on','xs_tmp');
 
                 /* Create the table */
                 return xs_framework::create_table([
@@ -774,23 +774,23 @@ class xs_template_html_plugin
                         intval($meta['xs_bugtracking_importance'][0]) :
                         '';
 
-                $data['product'][0] = 'Product:';
+                $data['product'][0] = __('Product','xs_tmp').':';
                 $data['product'][1] = $search['product'][$product];
-                $data['status'][0] = 'Status:';
+                $data['status'][0] = __('Status','xs_tmp').':';
                 $data['status'][1] = $search['status'][$status];
-                $data['importance'][0] = 'Importance:';
+                $data['importance'][0] = __('Importance','xs_tmp').':';
                 $data['importance'][1] = $search['importance'][$importance];
-                $data['assignee'][0] = 'Assignee:';
+                $data['assignee'][0] = __('Assignee','xs_tmp').':';
                 $data['assignee'][1] = $users[$assignee];
-                $data['reported_by'][0] = 'Reported by:';
+                $data['reported_by'][0] = __('Reported By','xs_tmp').':';
                 $data['reported_by'][1] = $users[$post->post_author];
-                $data['create_date'][0] = 'Reported on:';
+                $data['create_date'][0] = __('Reported on','xs_tmp').':';
                 $data['create_date'][1] = $post->post_date_gmt;
-                $data['modify_date'][0] = 'Last edit on:';
+                $data['modify_date'][0] = __('Last edit on','xs_tmp').':';
                 $data['modify_date'][1] = $post->post_modified_gmt;
 
                 /* Print the title of the bug with it's id */
-                echo '<h1>Bug '.$id.': '.get_the_title($id).'</h1>';
+                echo '<h1>'.__('Bug','xs_tmp').' '.$id.': '.get_the_title($id).'</h1>';
 
                 /* Print the bug property as table */
                 xs_framework::create_table([
