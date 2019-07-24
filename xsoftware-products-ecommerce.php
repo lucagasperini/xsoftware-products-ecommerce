@@ -347,14 +347,6 @@ class xs_template_html_plugin
                 return $output;
         }
 
-        function compare_by_price($a, $b)
-        {
-                if ($a['price'] == $b['price']) {
-                        return 0;
-                }
-                return ($a['price'] < $b['price']) ? -1 : 1;
-        }
-
         function archive_html_software($archive, $user_lang)
         {
                 $output = '';
@@ -393,12 +385,12 @@ class xs_template_html_plugin
                         'xs_product_template',
                         plugins_url('style/archive.min.css', __FILE__)
                 );
-                $by_price = array();
+
+                $output .= '<div class="products_table">';
 
                 foreach($archive as $id) {
-                        $tmp = array();
 
-                        $tmp['id'] = $id;
+                        $tmp = array();
                         $price = apply_filters('xs_cart_item_price', $id);
                         $tmp['price'] = $price['price'];
                         $tmp['currency'] = $price['currency_symbol'];
@@ -411,28 +403,20 @@ class xs_template_html_plugin
                                 true
                         );
 
-                        $by_price[] = $tmp;
-                }
-
-                usort($by_price, [$this,'compare_by_price']);
-
-                $output .= '<div class="products_table">';
-
-                foreach($by_price as $s) {
-                        $output .= '<a href="'.$s['link'].'">';
+                        $output .= '<a href="'.$tmp['link'].'">';
                         $output .= '<div class="products_item">';
                         $output .= '<div class="text">';
-                        $output .= '<h1>'.$s['title'].'</h1>';
-                        $output .= '<p>'.$s['descr'].'</p>';
+                        $output .= '<h1>'.$tmp['title'].'</h1>';
+                        $output .= '<p>'.$tmp['descr'].'</p>';
                         $output .= '</div>';
                         if(!empty($price)) {
                                 $output .= '<div class="price">';
                                 $output .= '<p>'.__('Price per month','xs_tmp').':</p>';
-                                $output .= '<i>'.$s['price'].
-                                ' '.$s['currency'].'</i>';
+                                $output .= '<i>'.$tmp['price'].
+                                ' '.$tmp['currency'].'</i>';
                                 $output .= '</div>';
                         }
-                        $output .= '<img src="'.$s['image'].'"/></div></a>';
+                        $output .= '<img src="'.$tmp['image'].'"/></div></a>';
                 }
                 $output .= '</div>';
                 return $output;
