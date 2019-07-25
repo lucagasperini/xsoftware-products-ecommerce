@@ -413,8 +413,7 @@ class xs_template_html_plugin
                         if(!empty($price)) {
                                 $output .= '<div class="price">';
                                 $output .= '<p>'.__('Price per month','xs_tmp').':</p>';
-                                $output .= '<i>'.$tmp['price'].
-                                ' '.$tmp['currency'].'</i>';
+                                $output .= '<p class="value">'.$tmp['price'].' '.$tmp['currency'].'</p>';
                                 $output .= '</div>';
                         }
                         $output .= '<img src="'.$tmp['image'].'"/></div></a>';
@@ -633,7 +632,7 @@ class xs_template_html_plugin
                 $output .= '<a href="'.$post['permalink'].'">';
                 $output .= '<div class="post">';
                 if(!empty($post['description']))
-                        $output .= '<span class="description">'.$post['description'].'</span>';
+                        $output .= '<p class="description">'.$post['description'].'</p>';
                 if(!empty($post['media']) && is_array($post['media']))
                         $output .= '<img src="'.$post['media'][0].'">';
                 else if(!empty($post['media']))

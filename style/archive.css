@@ -14,7 +14,7 @@
         height:300px;
 }
 
-.products_item > .price > i {
+.products_item > .price > .value {
         font-size:32px;
 }
 .products_item > .price {
