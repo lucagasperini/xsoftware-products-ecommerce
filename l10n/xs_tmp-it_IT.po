@@ -229,3 +229,6 @@ msgstr "Ultima modifica il"
 
 msgid "Bug"
 msgstr "Bug"
+
+msgid "Functionalities"
+msgstr "Funzionalità"

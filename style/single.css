@@ -90,14 +90,14 @@
         .product_content > .info {
                 padding:16px;
         }
-        .product_content > .info > .service, .product_content > .info > .server{
+        .product_content > .info > .service,
+        .product_content > .info > .server,
+        .product_content > .info > .software,
+        .product_content > .info > .functions
+        {
                 width:50%;
                 float:left;
-        }
-        .product_content > .info > .software{
-                margin-right:auto;
-                margin-left:auto;
-                width:50%;
+                padding-left:8px;
         }
         .product_content > .cart {
                 border-left: 1px solid #eee;

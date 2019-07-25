@@ -21,6 +21,12 @@
         text-align:center;
 }
 
+.products_item > .text > h1 {
+}
+
+.products_item > .text > p {
+        font-size:20px;
+}
 
 @media screen and (min-width: 48em) {
         .products_table {

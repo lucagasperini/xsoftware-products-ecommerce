@@ -229,6 +229,12 @@ class xs_template_html_plugin
                 $output .= '<div class="info">';
                 $output .= '<h1>'.$title.'</h1>';
                 $output .= '<p class="descr">'.$single['descr'].'</p>';
+                $output .= '<div class="functions">';
+                if(!empty($single['text'])) {
+                        $output .= '<h3>'.__('Functionalities','xs_tmp').':</h3>';
+                        $output .= '<p>'.nl2br($single['text']).'</p>';
+                }
+                $output .= '</div>';
                 $output .= '<div class="software">';
                 $output .= '<h3>'.__('Software informations','xs_tmp').':</h3>';
                 if(!empty($single['year'])) {
