@@ -296,6 +296,10 @@ class xs_template_html_plugin
                 $output .= '<p class="descr">'.$single['descr'].'</p>';
                 $output .= '<div class="service">';
                 $output .= '<h3>'.__('Our service includes','xs_tmp').':</h3>';
+                if(!empty($single['software'])) {
+                        $output .= '<b>'.__('Our Software','xs_tmp').':</b>';
+                        $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                }
                 if(!empty($single['marketing'])) {
                         $output .= '<b>'.__('Software Marketing','xs_tmp').':</b>';
                         $output .= '<p>'.__('Included','xs_tmp').'</p>';

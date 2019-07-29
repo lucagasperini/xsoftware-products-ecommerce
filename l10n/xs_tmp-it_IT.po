@@ -235,3 +235,6 @@ msgstr "Funzionalità"
 
 msgid "Software Marketing"
 msgstr "Software Marketing"
+
+msgid "Our Software"
+msgstr "Il nostro Software"
