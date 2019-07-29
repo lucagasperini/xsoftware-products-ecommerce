@@ -51,6 +51,7 @@ class xs_template_html_plugin
                 add_filter('xs_documentation_archive_show', [$this, 'documentation_archive_show']);
                 add_filter('xs_documentation_single_show', [$this, 'documentation_single_show']);
                 add_filter('xs_socials_icons_show', [$this, 'show_socials_icons']);
+                add_filter('xs_users_login_facebook', [$this, 'show_login_facebook']);
         }
 
         function l10n_load()
@@ -865,6 +866,20 @@ class xs_template_html_plugin
 
                 /* Print the parsed HTML of the documentation*/
                 $output .= get_post_meta($id, 'xs_documentation_html', true);
+
+                return $output;
+        }
+
+        function show_login_facebook($url)
+        {
+                /* Add the css style */
+                wp_enqueue_style(
+                        'xs_login_style',
+                        plugins_url('style/login.min.css', __FILE__)
+                );
+                $output = '';
+
+                $output .= '<a class="facebook_login" href="'.$url.'">Login with Facebook</a>';
 
                 return $output;
         }
