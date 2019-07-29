@@ -232,3 +232,6 @@ msgstr "Bug"
 
 msgid "Functionalities"
 msgstr "Funzionalità"
+
+msgid "Software Marketing"
+msgstr "Software Marketing"
