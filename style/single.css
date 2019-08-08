@@ -84,8 +84,8 @@
                 display: flex;
         }
         .product_content > img {
-                height: 512px;
-                width: 512px;
+                min-height: 512px;
+                min-width: 512px;
         }
         .product_content > .info {
                 padding:16px;
