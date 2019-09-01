@@ -77,7 +77,7 @@ class xs_template_html_plugin
                 </div>';
         }
 
-        function show_socials_icons()
+        function show_socials_icons($a)
         {
                 /* Add the css */
                 wp_enqueue_style(
@@ -87,14 +87,21 @@ class xs_template_html_plugin
 
                 /* Initialize string HTML variable */
                 $output = '';
-
+                
                 $output .= '<div class="xs_socials_icons">';
-                $output .= '<a href="mailto:info@xsoftware.it"><i class="fas fa-envelope-square"></i></a>';
-                $output .= '<a href="https://www.facebook.com/xsoftware.it"><i class="fab fa-facebook-square"></i></a>';
-                $output .= '<a href="https://www.instagram.com/xsoftware.it"><i class="fab fa-instagram"></i></a>';
-                $output .= '<a href="https://twitter.com/xsoftware_"><i class="fab fa-twitter-square"></i></a>';
-                $output .= '<a href="https://gitlab.com/xsoftware"><i class="fab fa-gitlab"></i></a>';
-                $output .= '</div>';
+                if(!empty($a['mail']))
+                        $output .= '<a href="'.$a['mail'].'"><i class="fas fa-envelope-square"></i></a>';
+                if(!empty($a['tel']))
+                        $output .= '<a href="tel:'.$a['tel'].'"><i class="fas fa-phone-square"></i></a>';
+                if(!empty($a['fb']))
+                        $output .= '<a href="'.$a['fb'].'"><i class="fab fa-facebook-square"></i></a>';
+                if(!empty($a['ig']))
+                        $output .= '<a href="'.$a['ig'].'"><i class="fab fa-instagram"></i></a>';
+                if(!empty($a['tw']))
+                        $output .= '<a href="'.$a['tw'].'"><i class="fab fa-twitter-square"></i></a>';
+                if(!empty($a['gitlab']))
+                        $output .= '<a href="'.$a['gitlab'].'"><i class="fab fa-gitlab"></i></a>';
+                        $output .= '</div>';
 
                 return $output;
         }
