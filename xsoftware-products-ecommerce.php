@@ -292,9 +292,6 @@ class xs_template_html_plugin
                 $title = get_the_title($id);
                 $price = apply_filters('xs_cart_item_price', $id);
 
-                $ssd = 0;
-                $hdd = 0;
-
                 $output .= '<div class="product_item">';
                 $output .= '<div class="product_content">';
                 $output .= '<img src="'.$image.'"/>';
@@ -311,6 +308,14 @@ class xs_template_html_plugin
                         $output .= '<b>'.__('Software Marketing','xs_tmp').':</b>';
                         $output .= '<p>'.__('Included','xs_tmp').'</p>';
                 }
+		if(!empty($single['assistance'])) {
+                        $output .= '<b>'.__('Assistance','xs_tmp').':</b>';
+                        $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                }
+		if(!empty($single['consultant'])) {
+                        $output .= '<b>'.__('Computer Consultant','xs_tmp').':</b>';
+                        $output .= '<p>'.__('Included','xs_tmp').'</p>';
+                }
                 if(!empty($single['ssl'])) {
                         $output .= '<b>'.__('SSL certificate','xs_tmp').':</b>';
                         $output .= '<p>'.__('Included','xs_tmp').'</p>';
@@ -325,34 +330,26 @@ class xs_template_html_plugin
                 }
                 if(!empty($single['web'])) {
                         $output .= '<b>'.__('Website','xs_tmp').':</b>';
-                        $output .= '<p>Hosting WordPress '.$single['web'].' SUPER GIGA</p>';
-                        $ssd += $single['web'];
+                        $output .= '<p>Hosting WordPress</p>';
                 }
                 if(!empty($single['cloud'])) {
                         $output .= '<b>'.__('Cloud','xs_tmp').':</b>';
-                        $output .= '<p>Hosting NextCloud '.$single['cloud'].' GIGA</p>';
-                        $hdd += $single['cloud'];
+                        $output .= '<p>Hosting NextCloud</p>';
                 }
                 if(!empty($single['erp'])) {
                         $output .= '<b>'.__('ERP','xs_tmp').':</b>';
-                        $output .= '<p>Hosting Odoo '.$single['erp'].' SUPER GIGA</p>';
-                        $ssd += $single['erp'];
+                        $output .= '<p>Hosting Odoo</p>';
                 }
                 if(!empty($single['mail'])) {
                         $output .= '<b>'.__('E-Mail','xs_tmp').':</b>';
-                        $output .= '<p>Hosting E-Mail '.$single['mail'].' GIGA</p>';
-                        $hdd += $single['mail'];
+                        $output .= '<p>Hosting E-Mail</p>';
                 }
                 $output .= '</div>';
                 $output .= '<div class="server">';
                 $output .= '<h3>'.__('Our server provides','xs_tmp').':</h3>';
-                if(!empty($ssd)) {
-                        $output .= '<b>'.__('SSD Drive','xs_tmp').':</b>';
-                        $output .= '<p>'.$ssd.' GB</p>';
-                }
-                if(!empty($hdd)) {
-                        $output .= '<b>'.__('HDD Drive','xs_tmp').':</b>';
-                        $output .= '<p>'.$hdd.' GB</p>';
+                if(!empty($single['disk'])) {
+                        $output .= '<b>'.__('Drive','xs_tmp').':</b>';
+                        $output .= '<p>'.$single['disk'].' GB</p>';
                 }
                 if(!empty($single['ram'])) {
                         $output .= '<b>'.__('RAM Space','xs_tmp').':</b>';
